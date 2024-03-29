@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/shop.css" />
+    <link rel="stylesheet" href="/css/adminShop.css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <title>Produits Admin</title>
+  </head>
+  <body id="adminBody" data-theme="dark">
+    <div>
+      <a href="/" id="backButton" class="adminButton">Retour</a>
+      <h1>Administration des produits</h1>
+      <button
+        id="themeSwitcher"
+        class="headerButton"
+        onclick="switchTheme(this)"
+      >
+        Theme sombre
+      </button>
+      <a href="/admin" class="adminButton">Espace Admin</a>
+    </div>
+    <div class="graphs">
+      <div>
+        <canvas class="lineGraph" id="salesLineGraph"></canvas>
+      </div>
+      <div>
+        <canvas class="barChart" id="salesBarChart"></canvas>
+      </div>
+    </div>
+    <div class="shopLibrary longFlex returnFlex">
+      <form class="productDesc newProduct adminForm" id="addNewProductForm">
+        <h4>Nouveau produit</h4>
+        <!-- Nom, description, prix, image, date debut, date fin, confirm_threashold, couleur, is_promoted -->
+        <input
+          type="text"
+          name="name"
+          id="productName"
+          placeholder="Nom du produit"
+        />
+        <textarea
+          name="description"
+          id="productDescription"
+          placeholder="Description"
+          maxlength="255"
+        ></textarea>
+        <span>
+          <input
+            type="number"
+            name="price"
+            id="productPrice"
+            placeholder="Prix"
+          /><input
+            type="number"
+            name="confirm_threashold"
+            id="productConfirmThreashold"
+            placeholder="Seuil de confirmation"
+          />
+        </span>
+        <span>
+          <input
+            type="file"
+            name="image"
+            id="productImage"
+            placeholder="Image"
+          />
+          <span>
+            <p>Promu</p>
+            <input
+              type="checkbox"
+              name="is_promoted"
+              id="productIsPromoted"
+              placeholder="Promu"
+            />
+          </span>
+        </span>
+        <span>
+          <input
+            type="text"
+            name="color"
+            id="productColor"
+            placeholder="Couleurs séparées par des virgules"
+          />
+          <input
+            type="text"
+            name="sizes"
+            id="productSizes"
+            placeholder="Tailles séparées par des virgules"
+          />
+        </span>
+
+        <span class="verticalflex">
+          <p>Disponible du</p>
+          <span>
+            <input
+              type="datetime-local"
+              name="release_date"
+              id="productReleaseDate"
+              placeholder="Date de sortie"
+            />
+            <p>au</p>
+            <input
+              type="datetime-local"
+              name="expire_date"
+              id="productExpireDate"
+              placeholder="Date d'expiration"
+            />
+          </span>
+        </span>
+
+        <button type="submit" class="adminButton">Ajouter</button>
+      </form>
+
+      <% products.forEach((product) => { %>
+      <div
+        class="product verticalflex"
+        data-promoted="<%= product.is_promoted %>"
+        onclick='location.href="/shop/product/<%= product.name.replace(` `, `-`) %>"'
+      >
+        <div
+          class="productImage"
+          style="
+            background-image: url('/products/<%= product.image %>');
+            --progress: <%= (product.sales_count / product.confirm_threashold) *
+              100 %>%;
+          "
+        ></div>
+        <div class="productDesc">
+          <h4><%= product.name %></h4>
+          <p class="desc"><%= product.description %></p>
+          <p class="price"><%= product.price %>€</p>
+          <button
+            class="adminButton"
+            onclick="deleteProduct('<%= product.id %>'); event.stopPropagation()"
+          >
+            Supprimer
+          </button>
+          <button
+            class="adminButton"
+            onclick="editProduct('<%= product.id %>'); event.stopPropagation()"
+          >
+            Modifier
+          </button>
+          <span class="bottomProductSpan">
+            <button
+              class="adminButton"
+              onclick="showSales('<%= product.id %>'); event.stopPropagation()"
+            >
+              Voir les achats
+            </button>
+            <button
+              class="adminButton addBuyer"
+              onclick="addBuyerToEvent('<%= product.id %>'); event.stopPropagation()"
+            >
+              +
+            </button>
+          </span>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </body>
+  <script src="/js/logic.js"></script>
+  <script src="/js/adminProducts.js"></script>
+</html>

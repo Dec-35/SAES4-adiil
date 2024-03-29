@@ -1,0 +1,5 @@
+V3.1
+
+- Ajout de la page admin de gestion de produits
+- Ajout de l'affichage des achats par personne sur l'interface admin
+- Résolution d'un bug en lien avec le panier

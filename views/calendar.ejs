@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emploi du temps</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="https://unpkg.com/ical.js@1.5.0/build/ical.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/he/1.2.0/he.min.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+  </head>
+
+  <body data-theme="light" id="centeredBody">
+    <%- include('header', {cartSize, isLoggedIn}) %>
+      <a href="/" id="backButton">Retour</a>
+      <h1 id="calendarHi">Bonjour, <%= username %>!</h1>
+      <div id="calendar"></div>
+      <div class="modal" id="eventModal">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2 id="modalTitle"></h2>
+          <p id="modalDescription"></p>
+          <p><strong>Salle : </strong> <span id="modalStart"></span></p>
+          <p><strong>Heure : </strong><span id="modalEnd"></span></p>
+        </div>
+      </div>
+  </body>
+  <script>
+    fetch('/api/user/getAgenda', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        if (res.status === 403) {
+          userAlert(
+            "L'ent univ-lemans rencontre des problèmes. Votre emploi du temps n'a pas pu être affiché. Merci de réessayer plus tard."
+          );
+          return;
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (data) {
+          if (data.error) {
+            console.log(
+              'erreur lors de la récupération de votre emploi du temps, merci de signaler ce problème'
+            );
+            return;
+          }
+
+          if (data.cached) {
+            userAlert(
+              "L'ent univ-lemans rencontre des problèmes. Votre emploi du temps n'est donc peut-être pas à jour."
+            );
+          }
+
+          //data.events is a string of the ical file, we need to parse it and extract the event objetcs from it
+          const events = ICAL.parse(data.events);
+          const comp = new ICAL.Component(events);
+          const vevents = comp.getAllSubcomponents('vevent');
+
+          //we need to convert the ical date format to a format that fullcalendar can understand
+          const calData = vevents.map((vevent) => {
+            const event = new ICAL.Event(vevent);
+            const startDate = event.startDate.toJSDate();
+            const endDate = event.endDate.toJSDate();
+            const summary = event.summary;
+            const description = event.description;
+            const location = event.location;
+            return {
+              title: summary,
+              start: startDate,
+              end: endDate,
+              description: description,
+              location: location,
+            };
+          });
+
+          renderTheCal(calData);
+        }
+      });
+
+    const overlay = document.querySelector('.modal');
+    overlay.addEventListener('click', (e) => {
+      const eventCard = document.querySelector('.modal-content');
+      if (!eventCard.contains(e.target)) {
+        overlay.style.display = 'none';
+      }
+    });
+  </script>
+  <script src="/js/calendars.js"></script>
+  <script src="/js/logic.js"></script>
+
+</html>

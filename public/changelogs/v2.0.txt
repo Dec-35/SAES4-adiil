@@ -1,0 +1,9 @@
+V2.0
+
+- Ajout de la page du leaderboard général
+- Ajout des changelogs
+- Réparation de la séquence de paiement 
+- Mise à jour de la FAQ
+- Mise à jour du bouton "Retour"
+- Correction de bugs
+- Optimisation du site sur mobile

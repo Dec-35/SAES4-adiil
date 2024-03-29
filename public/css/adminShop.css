@@ -1,0 +1,213 @@
+button {
+    font-family: 'Inter';
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--casual-text-color);
+    margin-top: 6px;
+    color: var(--background-color);
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: all 0.1s;
+
+}
+
+#popup {
+    align-items: center;
+    justify-content: center;
+    padding-top: 0;
+    padding: 2rem 1rem;
+}
+
+button:not(.closeButton) {
+    width: 100%;
+}
+
+.clickable {
+    cursor: pointer;
+
+}
+
+button:hover {
+    background-color: var(--important-text-color);
+}
+
+.product {
+    height: 490px;
+    position: relative;
+}
+
+.product[data-promoted="1"]::before {
+    content: 'Mis en avant';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: fit-content;
+    text-align: center;
+    padding: 4px;
+    background: var(--color-gradient);
+}
+
+.productImage::after {
+    width: var(--progress);
+    height: 5px;
+    background: var(--color-gradient);
+    max-width: 100%;
+    content: '';
+    bottom: 0;
+    position: absolute;
+}
+
+.newProduct {
+    justify-content: space-between;
+    height: 490px;
+    flex-grow: 1;
+    width: 420px;
+    border-radius: 5px;
+}
+
+.noPointer {
+    cursor: default;
+}
+
+.popupContent {
+    min-height: 190px;
+    max-height: 100%;
+}
+
+.popupContent h3 {
+    text-align: left;
+}
+
+#searchUserResults::before {
+    content: "Utilisateurs :";
+    position: fixed;
+    transform: translateY(calc(-100% - 0.9em));
+}
+
+.closeButton {
+    position: relative;
+    width: fit-content;
+    margin: 0;
+    margin-left: auto;
+}
+
+#searchUserResults {
+    position: relative;
+    gap: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sale {
+    background-color: var(--background-color);
+    padding: 8px;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sale * {
+    margin: 0;
+}
+
+#editProductForm {
+    gap: 0;
+    align-items: start;
+}
+
+#editProductForm input:not([type="checkbox"]) {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+#editProductForm p {
+    margin: 0.5rem 0;
+}
+
+input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    margin-right: auto;
+}
+
+p {
+    margin: 0;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    resize: vertical;
+    background-color: var(--secondary-background-color);
+    color: var(--casual-text-color);
+    font-size: 0.9rem;
+    padding: 8px;
+
+    border: none;
+    border-radius: 5px;
+}
+
+.adminForm .verticalflex {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.popupPriceTotal {
+    margin-bottom: 1.5rem;
+}
+
+.graphs {
+    flex-grow: 1;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    gap: 2rem;
+    padding: 0 2rem;
+}
+
+.graphs>div {
+    height: 100%;
+    width: 100%;
+}
+
+.bottomProductSpan {
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.bottomProductSpan button {
+    margin-top: 0;
+}
+
+.bottomProductSpan button.addBuyer {
+    width: fit-content;
+}
+
+#searchUserForm {
+    align-items: start;
+}
+
+@media only screen and (max-width: 775px) {
+    .shopLibrary {
+        margin: 0;
+        width: 100%;
+    }
+
+    #addNewProductForm {
+        width: 100%;
+        height: fit-content;
+    }
+
+    #addNewProductForm span {
+        flex-direction: column;
+    }
+
+    .graphs {
+        height: 400px;
+        flex-direction: column;
+    }
+}

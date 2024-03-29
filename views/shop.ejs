@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/shop.css" />
+
+    <script src="https://unpkg.com/ical.js@1.5.0/build/ical.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <title>ADIIL - Boutique</title>
+  </head>
+
+  <body data-theme="light">
+    <%- include('header', {cartSize, isLoggedIn}) %> <% if (splashProduct !=
+    'None') { %>
+    <div id="splashBanner" class="longFlex">
+      <div class="desc centerFlex">
+        <h1 id="splashTitle"><%= splashProduct %></h1>
+        <button
+          onclick="location.href='product/<%= splashProduct.replace(` `, `-`) %>'"
+          id="buy"
+          tabindex="2"
+        >
+          Je commande
+        </button>
+      </div>
+      <img class="image" src="/products/<%= splashImage %>" />
+    </div>
+    <% } %>
+    <h3>La boutique</h3>
+    <% if (products.length == 0) { %>
+    <p>Il n'y a pas de produits disponibles actuellement</p>
+    <% } %>
+    <div class="shopLibrary longFlex returnFlex">
+      <% products.forEach((product) => { %>
+      <div
+        class="product verticalflex"
+        onclick='location.href="product/<%= product.name.replace(` `, `-`) %>"'
+        onkeydown="if(event.keyCode == 13) location.href='product/<%= product.name.replace(` `, `-`) %>'"
+        tabindex="2"
+      >
+        <div
+          class="productImage"
+          style="background-image: url('/products/<%= product.image %>')"
+        ></div>
+        <div class="productDesc">
+          <h4><%= product.name %></h4>
+          <p class="desc"><%= product.description %></p>
+          <p class="price"><%= product.price %>€</p>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </body>
+  <script src="/js/logic.js"></script>
+  <script>
+    document.getElementById('splashBanner').style.backgroundColor =
+      randomPastelColor(document.getElementById('splashTitle').textContent);
+
+    document.querySelectorAll('.productImage').forEach((el) => {
+      el.parentElement.style.backgroundColor = randomPastelColor(
+        el.parentElement.querySelector('h4').textContent
+      );
+    });
+  </script>
+</html>

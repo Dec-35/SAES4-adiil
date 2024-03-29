@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/shop.css" />
+
+    <script src="https://unpkg.com/ical.js@1.5.0/build/ical.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <title>ADIIL - <%= product.name %></title>
+  </head>
+
+  <body data-theme="light">
+    <%- include('header', {cartSize, isLoggedIn}) %>
+    <div class="productContainer">
+      <img id="img" src="/products/<%= product.image %>" />
+      <div class="desc">
+        <h1><%= product.name %></h1>
+        <p class="available_until"></p>
+        <p class="description"><%= product.description %></p>
+        <% if(colors.length === 1){ %>
+        <p class="color">Couleur : <%= colors[0] %></p>
+        <% }else if(colors.length > 1){ %>
+        <label for="colorSelector">Couleur :</label>
+        <select name="color" id="colorSelector">
+          <% colors.forEach((color)=> { %>
+          <option value="<%= color %>"><%= color %></option>
+          <% }) %>
+        </select>
+        <% } if(sizes.length > 0) { %>
+        <label for="sizeSelector">Taille :</label>
+        <select name="size" id="sizeSelector">
+          <% sizes.forEach((size)=> { %>
+          <option value="<%= size.name %>"><%= size.name %></option>
+          <% }) %>
+        </select>
+        <% } %>
+        <p class="price"><%= product.price %>€</p>
+        <button onclick="addToCart()" id="buy" tabindex="2">
+          Ajouter au panier
+        </button>
+        <% if(product.confirm_threashold){ %>
+        <div class="progression">
+          <div
+            class="progressionBar"
+            style="--progress: <%= product.progress %>%"
+          >
+            <div class="inside"></div>
+          </div>
+          <p>
+            Commandes : <%= product.orderCount %>/<%= product.confirm_threashold
+            %><sup><em>1</em></sup>
+          </p>
+        </div>
+        <% } %>
+      </div>
+    </div>
+    <% if(product.confirm_threashold){ %>
+    <p id="indicator">
+      <sup><em>1</em></sup
+      >: La barre de progression indique si le produit sera commandé ou non. Si
+      la barre n'atteint pas 100%, le produit ne sera pas commandé les personnes
+      ayant précommandé seront remboursées.
+    </p>
+    <% } %>
+  </body>
+  <script src="/js/logic.js"></script>
+  <script>
+    document.getElementById('img').style.backgroundColor = randomPastelColor(
+      '<%= product.name %>'
+    );
+
+    document.getElementById('buy').style.backgroundColor = randomPastelColor(
+      '<%= product.name %>'
+    );
+
+    const date_expire = '<%= product.expire_date %>';
+    const date = new Date(date_expire);
+    document.querySelector('.available_until').innerHTML =
+      "Disponible jusqu'au " + date.toLocaleDateString('fr-FR');
+
+    function addToCart() {
+      var size = '';
+      if (document.getElementById('sizeSelector')) {
+        size = document.getElementById('sizeSelector').value;
+      }
+      if (document.getElementById('colorSelector')) {
+        const color = document.getElementById('colorSelector').value;
+        console.log(color);
+        console.log(size);
+        size = size.length != 0 ? size + ' ' + color : color;
+      }
+      const id = parseInt('<%= product.id %>');
+      const data = {size, id};
+      fetch('/addItemToCartPort', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'item-type': 'product',
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            location.href = '/pay';
+          } else {
+            userAlert('Une erreur est survenue : ' + data.message);
+          }
+        })
+        .catch((err) => {
+          userAlert('Une erreur est survenue : ' + err);
+        });
+    }
+  </script>
+</html>

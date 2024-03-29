@@ -1,0 +1,7 @@
+V2.5
+
+- Réparation de bugs liés au paiement paypal
+- Refonte de la page Panier et de paiement
+- Ajout du paiement intégré au site avec notre partenaire HelloAsso
+- Augmentation du prix lors du paiement via PayPal pour compenser les marges que PayPal prend
+- Sécurisation de la vérification de paiement

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+
+    <title>ADIIL-Espace Compte</title>
+  </head>
+
+  <body data-theme="light">
+    <div id="accountContainer">
+      <div id="navbar">
+        <h1>Compte</h1>
+        <a class="vanLink active" onclick="setActiveNav(this)" href="#hspacer"
+          >Infos personnelles</a
+        >
+        <a class="vanLink" onclick="setActiveNav(this)" href="#hspacer2"
+          >Niveau d'xp</a
+        >
+        <a class="vanLink" onclick="setActiveNav(this)" href="#hspacer3"
+          >Grade</a
+        >
+        <a class="vanLink" onclick="setActiveNav(this)" href="#hspacer4"
+          >Inscriptions</a
+        >
+
+        <button id="themeSwitcher" onclick="switchTheme(this)">
+          Theme sombre
+        </button>
+        <p onclick="window.location.href = '/api/account/logout'">Déconnexion</p>
+        <a href="/" id="backButton" class="nonAbsolute">Retour</a>
+      </div>
+      <div id="content">
+        <div class="spacer" id="hspacer"></div>
+        <h2 id="hspacerTitle" class="sectionTitle">Infos personnelles</h2>
+        <div id="accountDetailsContainer">
+          <div id="accountInfo">
+          <img
+            id="accountPhoto"
+            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+            alt=""
+          />
+          
+          <h2><%= username %></h2>
+          <p id="xpAmount"><em><%= xp %> xp</em></p>
+        </div>
+        <div id="personnalInfo">
+          <p id="identityP"></p>
+          <button onclick="changerClasse()">Modifier</button>
+          <p>Adresse mail : <%= email %></p>
+          <span></span>
+          <p>Mot de passe : ********</p>
+          <button onclick="window.location.href = 'forgottenPass'">
+            Modifier
+          </button>
+          <p id="info">Discord</p>
+          
+          <button id="discordLinkButton" onclick="window.location.href='https://discord.com/api/oauth2/authorize?client_id=1149050144868806656&redirect_uri=https%3A%2F%2Fbdeinfo.fr%2Fdiscord-verif%2F&response_type=token&scope=identify%20guilds'">Lier</button>
+            
+          
+          
+        </div>
+        </div>
+        
+        <div class="vspacer"></div>
+        <div class="spacer" id="hspacer2"></div>
+        <h2 id="xpInfoTitle" class="sectionTitle">Niveau d'xp</h2>
+        <div id="xpInfo">
+          <div
+            id="xpBar"
+            style='
+              --progress: <%= xp_progress %>%;
+              --total: '<%= 'Renouvellement du grade : ' + Math.round(xp / xp_progress * 100) + ' xp' %>";
+            '
+          >
+            <div id="xpProgress"></div>
+          </div>
+          <p><em><%= xp %> xp</em></p>
+
+          <p id="eventNum">Vous avez participé à 0 événements.</p>
+        </div>
+        <div class="vspacer"></div>
+        <div class="spacer" id="hspacer3"></div>
+        <h2 id="gradeInfoTitle" class="sectionTitle">Grade</h2>
+        <div id="gradeInfo">
+          <div class="gradeContainer unsub">
+            <div></div>
+            <div class="grade accountGrade desabonne">
+              <h2>Désabonnement</h2>
+              <p>
+                En vous désabonnant, vous perdrez tous les avantages de votre
+                grade actuel. Si vous avez acheté votre grade il y a moins de 14
+                jours et que vous n'avez pas utilisé ses avantages, vous pouvez
+                vous faire rembourser auprès du BDE.
+              </p>
+              <button class="gradeBuyButton unsubButton">Se désabonner</button>
+            </div>
+
+            <div
+              onclick="scrollToNextGrade(this)"
+              class="gradeOption nextGrade"
+            >
+              Retour
+              <div class="arrow"></div>
+            </div>
+          </div>
+          <div class="gradeContainer">
+            <div
+              onclick="scrollToPreviousGrade(this)"
+              class="gradeOption desabonner firstOne"
+            >
+              Se désabonner
+              <div class="arrow"></div>
+            </div>
+            <div class="grade accountGrade">
+              <img
+                src="https://media.forgecdn.net/avatars/362/344/637529102794456266.png"
+                alt=""
+              />
+              <h2>Iron</h2>
+              <div class="gradeDesc">
+                <h3>Avantages :</h3>
+                <ul>
+                  <li>Compétitions de code</li>
+                  <li>Accès aux bénéfices du parrainage (bonus d'xp)</li>
+                </ul>
+              </div>
+              <button class="gradeBuyButton b0"><%= ironprice %>€</button>
+            </div>
+            <div
+              onclick="scrollToNextGrade(this)"
+              class="gradeOption nextGrade"
+            >
+              Prochain grade
+              <div class="arrow"></div>
+            </div>
+          </div>
+
+          <div class="gradeContainer">
+            <div
+              onclick="scrollToPreviousGrade(this)"
+              class="gradeOption desabonner"
+            >
+              Grade précédent
+              <div class="arrow"></div>
+            </div>
+            <div class="grade accountGrade">
+              <img src="/graphics/Gold_Ingot_JE4_BE2.png" alt="" />
+              <h2>Gold</h2>
+              <div class="gradeDesc">
+                <h3>Avantages :</h3>
+                <ul>
+                  <li>Avantages Iron</li>
+                  <li>Evénements privés</li>
+                  <li>Soirées privées du BDE</li>
+                </ul>
+              </div>
+              <button class="gradeBuyButton b1"><%= goldprice %>€</button>
+            </div>
+            <div
+              onclick="scrollToNextGrade(this)"
+              class="gradeOption nextGrade"
+            >
+              Prochain grade
+              <div class="arrow"></div>
+            </div>
+          </div>
+
+          <div class="gradeContainer">
+            <div
+              onclick="scrollToPreviousGrade(this)"
+              class="gradeOption desabonner"
+            >
+              Grade précédent
+              <div class="arrow"></div>
+            </div>
+            <div class="grade accountGrade">
+              <img src="/graphics/11-2-minecraft-diamond.png" alt="" />
+              <h2>Diamant</h2>
+              <div class="gradeDesc">
+                <h3>Avantages :</h3>
+                <ul>
+                  <li>Avantages Gold</li>
+                  <li>-10% sur tous les événements du BDE</li>
+                  <li>Valable à l'année</li>
+
+                   <li>1 bon d'achat de 10€ sur l'entièreté du site</li>
+
+                </ul>
+              </div>
+              <button class="gradeBuyButton b2">
+                <%= diamantprice %>€
+              </button>
+            </div>
+            <div>
+              <div
+                onclick="scrollToActiveGrade()"
+                class="gradeOption nextGrade"
+              >
+                Retour
+                <div class="arrow"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="vspacer"></div>
+        <div class="spacer" id="hspacer4"></div>
+        <h2 class="sectionTitle">Inscriptions aux événements</h2>
+        <h4 class="informativeTitleText">
+          Pour vous désinscrire, merci de
+          <a style="padding: 0" href="/contact">contacter</a> l'ADIIL et
+          demander une désinscription à l'évennement.
+        </h4>
+        <div id="eventList"></div>
+        <div class="vspacer"></div>
+      </div>
+    </div>
+  </body>
+  <script src="/js/logic.js"></script>
+  <script>
+    if (document.body.getAttribute('data-theme') == 'dark') {
+      document.querySelector('button').innerHTML = 'Theme clair';
+    } else {
+      document.querySelector('button').innerHTML = 'Theme sombre';
+    }
+
+    if (window.innerWidth < 800) {
+      document.getElementById('navbar').addEventListener('click', () => {
+        document.getElementById('navbar').classList.toggle('active');
+      });
+    }
+
+    function setActiveNav(element) {
+      let navLinks = document.querySelectorAll('.vanLink');
+      navLinks.forEach((element) => {
+        element.classList.remove('active');
+      });
+      element.classList.add('active');
+    }
+
+    const extractNameFromEmail = (email) => {
+      const parts = email.split('@')[0].split('.');
+      const firstName = parts[0];
+      const lastName = parts[1];
+
+      return firstName + ' ' + lastName;
+    };
+
+    document.getElementById('identityP').innerHTML =
+      'Identité : ' +
+      extractNameFromEmail('<%= email %>') +
+      ' - <%= category %>';
+
+    function scrollToNextGrade(elem) {
+      elem.parentNode.nextElementSibling.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+
+    function scrollToPreviousGrade(elem) {
+      elem.parentNode.previousElementSibling.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+
+    const grade = '<%= grade %>';
+
+    if (grade === 'None') {
+      document.querySelector('.unsub').remove();
+      document.querySelector('.desabonner.firstOne').innerHTML = '';
+      document.querySelector('.gradeContainer').classList.add('active');
+    } else {
+      document
+        .querySelectorAll('.gradeContainer')
+        [['Iron', 'Gold', 'Diamant'].indexOf(grade) + 1].classList.add(
+          'active'
+        );
+    }
+
+    fetch('/api/user/getEventsUser', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          const events = data.events;
+          const eventList = document.createElement('ul');
+
+          events.forEach((event) => {
+            const eventItem = document.createElement('li');
+            const date = new Date(event.date).toLocaleDateString('fr-FR');
+            var time = new Date(event.date).toLocaleTimeString('fr-FR');
+            //remove the seconds
+            time = time.slice(0, -3);
+
+            eventItem.innerHTML = event.name + ' - ' + date + ' à ' + time;
+            eventList.appendChild(eventItem);
+          });
+          document.getElementById('eventList').appendChild(eventList);
+
+          document.getElementById('eventNum').innerHTML =
+            'Vous avez participé à ' + events.length + ' événements.';
+        } else {
+          alert('Error getting user events');
+        }
+      });
+
+    if (grade !== 'None' && grade !== '') {
+      var selector = '.' + grade.toLowerCase();
+
+      var gradeToDisable = document.querySelector('.b' + grade);
+      gradeToDisable.classList.add('disabled');
+      gradeToDisable.innerHTML = 'Déjà acheté';
+      gradeToDisable.disabled = true;
+    }
+
+    document.getElementById('gradeInfo').scrollLeft =
+      document.querySelector('.gradeContainer.active').offsetLeft - 230;
+
+    function scrollToActiveGrade() {
+      document.querySelector('.gradeContainer.active').scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
+    }
+  </script>
+  <script>
+    //discord stuff
+
+    window.onload = () => {
+
+      if(getDiscordInfos()) return;
+      
+      const fragment = new URLSearchParams(window.location.hash.slice(1));
+      const [accessToken, tokenType] = [fragment.get('access_token'), fragment.get('token_type')];
+
+      if (!accessToken) {
+        return;
+      }
+
+      fetch('https://discord.com/api/users/@me', {
+        headers: {
+          authorization: `${tokenType} ${accessToken}`,
+        },
+      })
+        .then(result => result.json())
+        .then(response => {
+          const { id, username, avatar } = response;
+          
+          
+          setDiscordInfos(username, avatar, id);
+        })
+        .catch(console.error);
+    };
+    
+
+    function setDiscordInfos(username, avatar, id) { 
+      const discordName = document.getElementById('info');
+      discordName.innerText += ' : ' + username;
+      
+      document.getElementById('discordLinkButton').innerHTML = 'Mettre à jour'
+
+      const pfp = document.getElementById('accountPhoto');
+      pfp.src = `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`;
+
+      fetch('/api/discord/setDiscordInfos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+          avatar: avatar,
+          id: id
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            console.log('Discord infos set');
+            window.location.href = '/account';
+          } else {
+            console.log('Error setting discord infos');
+          }
+        });
+     }
+
+     function getDiscordInfos() { 
+      const pfp = document.getElementById('accountPhoto')
+      //get the discord profile picture
+      fetch('/api/discord/getDiscordInfos', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((res) => {
+          if(res.status === 204){
+            return false;
+          }
+          return res.json()
+        })
+        .then((data) => {
+          if (data.success) {
+            fetch(data.pfp).then((res) => {
+              if(res.status === 404){
+                const warning = document.createElement('p');
+                warning.innerText = 'Vous avez changé votre photo de profil discord, veuillez mettre à jour votre connexion discord';
+                const accountInfo = document.getElementById('accountInfo');
+                accountInfo.appendChild(warning);
+                return;
+              }
+              pfp.src = data.pfp;
+            })
+
+            
+
+            if(data.username !== '') {
+              const discordName = document.getElementById('info');
+              discordName.innerText += ' : ' + data.username;
+              
+              document.getElementById('discordLinkButton').innerHTML = 'Mettre à jour'
+            }
+
+            return true;
+            
+          } 
+          return false;
+        });
+      }
+
+    
+		
+
+  
+  </script>
+</html>

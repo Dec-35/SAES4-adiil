@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>email confirmation</title>
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+      body {
+        inset: 0;
+        padding: 0;
+        margin: 0;
+        height: 70vh;
+      }
+
+      .body {
+        background-color: rgb(141, 236, 216);
+        font-family: 'Inter', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 5em;
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+      }
+
+      #maindiv {
+        width: 500px;
+        text-align: center;
+        background-color: aliceblue;
+        border-radius: 3px;
+        padding: 3em 2em;
+        max-width: 50%;
+        margin: 0 auto 5em;
+      }
+
+      h1,
+      h3 {
+        width: fit-content;
+      }
+
+      #codediv {
+        background-color: white;
+        padding: 5px;
+        text-align: center;
+        max-width: 70%;
+        margin: 1em auto;
+      }
+
+      #disclaimer {
+        font-size: 0.8em;
+        text-align: center;
+        max-width: 60%;
+        margin: 1em auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="body">
+      <div id="maindiv">
+        <h1>Confirmation de votre {{reason}}.</h1>
+        <h3>Voici votre code de confirmation :</h3>
+        <div id="codediv">
+          <p>{{passcode}}</p>
+        </div>
+        <p id="disclaimer">
+          Merci de ne pas partager ce code. Si vous n'êtes pas à l'origine de ce
+          mail, merci de l'ignorer
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

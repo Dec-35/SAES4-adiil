@@ -1,0 +1,424 @@
+.paypal-buttons {
+    width: 80% !important;
+
+}
+
+h4 {
+    text-align: left;
+}
+
+.ammountInput {
+    width: 2em;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Inter:400,400i,500,700");
+
+
+* {
+    font-family: 'Inter';
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    background-color: #F5F5F5;
+}
+
+.mainContainer {
+    align-items: center;
+    margin: 7rem 0 5rem;
+    width: 100%;
+}
+
+.verticalflex {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+}
+
+.centerFlex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+.content {
+    background-color: var(--background-color);
+    border-radius: 4px;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.title {
+    width: 40%;
+    position: relative;
+    padding: 1.6rem;
+}
+
+
+
+.longFlex {
+    display: flex;
+    flex-direction: row;
+}
+
+.selector {
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    background-color: #ccc;
+}
+
+.selector.active {
+    background-color: #777;
+}
+
+.stepSelector {
+    gap: 4px;
+    position: absolute;
+    bottom: 6px;
+}
+
+.selectorArrow {
+    height: 60%;
+    width: 3rem;
+    background-color: var(--third-bg-color);
+    border-radius: 4px;
+    position: absolute;
+    cursor: pointer;
+}
+
+.selectorArrow.next {
+    right: 1rem;
+}
+
+.selectorArrow.previous {
+    left: 1rem;
+}
+
+.selectorArrow::after {
+    content: '';
+    background-color: #777;
+    mask-size: 50%;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    mask-image: url('/graphics/arrow.svg');
+}
+
+.next::after {
+    transform: rotate(0deg)
+}
+
+
+.previous::after {
+    transform: rotate(180deg);
+}
+
+
+.stepContent {
+    width: 70%;
+    padding: 1rem 2rem 1rem 1.5rem;
+    margin-bottom: 20%;
+}
+
+span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+}
+
+.cart>ul>li>span {
+    display: grid;
+    grid-template-columns: 40% 1fr auto;
+    align-items: center;
+    position: relative;
+}
+
+.cartItem {
+    background-color: var(--third-bg-color);
+    padding: 0.5rem;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+.headers {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    font-weight: 600;
+}
+
+.toggleSelector {
+    height: .9rem;
+    width: .9rem;
+    border: 2px solid var(--casual-text-color);
+    margin-left: auto;
+    border-radius: 2px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: all 0.1s;
+    position: relative;
+}
+
+.toggleSelector.active {
+    background-color: var(--casual-text-color);
+}
+
+.toggleSelector.active::after {
+    color: var(--background-color);
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    display: block;
+    content: '✔';
+    font-size: 0.6rem;
+    text-align: center;
+    translate: 0px -5px;
+    font-weight: 400;
+}
+
+#deleteButton {
+    position: absolute;
+    height: 0.9rem;
+    width: 1rem;
+    right: -1.5rem;
+    background-color: var(--casual-text-color);
+    mask-image: url('/graphics/trash.svg');
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: url('/graphics/trash.svg');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-size: 80%;
+    -webkit-mask-size: 80%;
+    cursor: pointer;
+}
+
+.checkout {
+    margin-top: auto;
+    border: none;
+    background: linear-gradient(270deg, #62f181, #5af0d4);
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.paymentSelector {
+    width: fit-content;
+    margin: 0 auto;
+    background-color: var(--third-bg-color);
+    padding: .5rem;
+    gap: 1rem;
+    border-radius: 8px;
+}
+
+.paymentSelector>h4 {
+    padding: .5rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.paymentSelector>h4.active {
+    background-color: var(--background-color);
+}
+
+
+#paypal-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 50% !important;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    flex-direction: column;
+}
+
+#cbForm {
+    width: 100%;
+    gap: 2rem;
+}
+
+input,
+.payButton,
+.checkout {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    height: 3rem;
+    padding: 0.8em;
+    border-radius: 8px;
+    outline: none;
+    color: var(--important-text-color);
+    border: 2px solid #A9A9A9;
+    background-color: var(--background-color);
+}
+
+.payButton,
+.checkout {
+    border: none;
+    color: black;
+}
+
+::placeholder {
+    color: #A9A9A9;
+    opacity: 1;
+}
+
+::-ms-input-placeholder {
+    color: #A9A9A9;
+}
+
+.formCat {
+    padding: 0.7rem;
+    background-color: var(--third-bg-color);
+    border-radius: 4px;
+    width: 100%;
+    align-self: stretch;
+    flex: 1;
+}
+
+#cbForm p {
+    color: #A9A9A9;
+}
+
+.smallNum {
+    width: 50%;
+}
+
+.smallNum,
+.bigNum {
+    text-align: center;
+}
+
+.payStep {
+    width: fit-content;
+    margin: 0 2rem;
+}
+
+.disclaimers {
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.perso h4,
+.paymentSelector h4:nth-child(2) {
+    position: relative;
+    width: fit-content;
+}
+
+.perso h4::after,
+.paymentSelector h4:nth-child(2)::after {
+    content: '2';
+    top: -2px;
+    right: -7px;
+    ;
+    position: absolute;
+    font-size: 0.6rem;
+}
+
+.paymentSelector h4:nth-child(2)::after {
+    content: '1';
+    right: 5px;
+    top: 2px;
+}
+
+.actionContainer {
+    justify-content: space-between;
+}
+
+#priceTitle {
+
+    left: 0;
+}
+
+.nextStepButton.checkout {
+    width: fit-content;
+    padding: 0.8em 1.2em;
+}
+
+
+.loadingOverlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(42, 42, 42, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loadingOverlay::before {
+    content: 'Redirection vers le paiement...';
+    color: white;
+    font-size: 1.2rem;
+}
+
+.loadingOverlay::after {
+    content: '';
+    background-color: white;
+    height: 2rem;
+    width: 2rem;
+    mask-image: url('/graphics/loading.svg');
+    mask-repeat: no-repeat;
+    mask-position: center;
+    -webkit-mask-image: url('/graphics/loading.svg');
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    animation: spin 1s infinite;
+    mask-size: 100%;
+    -webkit-mask-size: 100%;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg)
+    }
+
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
+@media only screen and (max-width: 775px) {
+    .content {
+        width: 95%;
+    }
+
+    #cbForm {
+        flex-direction: column;
+    }
+
+    .mainContainer {
+        margin: 4rem 0 5rem;
+    }
+
+    .stepContent {
+        margin-bottom: 6rem;
+    }
+}

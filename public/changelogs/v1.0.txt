@@ -1,0 +1,6 @@
+V1.0
+
+- Déploiement initial du site
+- Affichage des events
+- Création de compte
+- Affichage de l'emploi tu temps

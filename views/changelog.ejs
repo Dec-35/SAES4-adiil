@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>ADIIL - FAQ</title>
+  </head>
+  <body id="legalStuff" data-theme="light">
+    <a id="backButton" href="/changelogs">Changelogs</a>
+    <h1>Changelog de la <%= version %></h1>
+  </body>
+  <script src="/js/logic.js"></script>
+  <script>
+    fetch('/api/changelogs/<%= version %>')
+      .then((res) => res.json())
+      .then((data) => {
+        var list = data.changelogArray;
+        //set a cleaned up list to the changelog array without the version number nor the - at the beginning of each line
+        //skip the first two lines
+        list.splice(0, 2);
+
+        const changelog = document.createElement('ul');
+        changelog.id = 'changelog';
+        list.forEach((change) => {
+          const changeItem = document.createElement('li');
+          changeItem.innerHTML = change.split('-')[1];
+          changelog.appendChild(changeItem);
+        });
+        document.body.appendChild(changelog);
+      });
+  </script>
+</html>

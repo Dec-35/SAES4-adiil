@@ -1,0 +1,5 @@
+V2.2
+
+- Ajout des couleurs sur l'Agenda
+- Ajout de la bannière publicitaire
+- Mise à jour de l'API interne / section admin

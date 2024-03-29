@@ -1,0 +1,34 @@
+<header>
+  <a href="/">Accueil</a>
+  <a href="/#evenements">Evenements</a>
+  <a href="/calendar/">Agenda</a>
+  <a href="/shop/">Boutique</a>
+  <% if(cartSize > 0) {%>
+    <a id="cartButton" href="/pay/" style="--number: <%= "'"+cartSize+"'" %>">Panier</a>
+  <% } %> 
+  <button id="themeSwitcher" class="headerButton" onclick="switchTheme(this)">Theme sombre</button>
+  <% if (isLoggedIn) { %>
+    <a id="loginButton" href="/account/">Mon compte</a>
+  <% } else { %>
+    <a id="loginButton" href="/login?returnUrl=/account">Connexion</a>
+  <% } %>
+</header>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+    // Get the current page URL
+    var currentPage = window.location.pathname;
+
+    // Remove the leading '/' from the URL
+    currentPage = currentPage.substring(1);
+
+    // Select the appropriate link based on the current page and add the .selected class
+    var links = document.querySelectorAll('header a');
+    links.forEach(function(link) {
+      var linkHref = link.getAttribute('href').substring(1);
+      if (linkHref === currentPage) {
+        link.classList.add('selected');
+      }
+    });
+  });
+</script>

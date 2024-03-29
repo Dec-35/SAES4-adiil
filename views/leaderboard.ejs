@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/css/style.css" />
+
+    <title>ADIIL-Leaderboard</title>
+  </head>
+  <body data-theme="light" data-theme="light">
+    <%- include('header', {cartSize, isLoggedIn}) %>
+    <a id="backButton" href="/">Retour</a>
+    <h1 class="mdTitle">Leaderboard d'xp</h1>
+
+    <div id="xpLeaderboardContainer" class="xpLeaderboard">
+      <div class="leaderboardUser bold">
+        <p class="leaderboardUserRank">N°</p>
+        <span>
+          <p
+            class="leaderboardUserPseudo xpfilterOption"
+            onclick="sortByName()"
+          >
+            Pseudo
+          </p>
+          <input
+            type="text"
+            id="nameSearch"
+            class="filterInput"
+            placeholder="Chercher un pseudo"
+            onkeyup="filterByName(this.value)"
+          />
+        </span>
+
+        <p class="leaderboardUserScore xpfilterOption" onclick="sortByXp()">
+          XP
+        </p>
+        <p
+          class="leaderboardUserScore xpfilterOption"
+          onclick="sortByCategory()"
+        >
+          Groupe TP
+        </p>
+      </div>
+    </div>
+  </body>
+  <script src="/js/logic.js"></script>
+  <script src="/js/leaderboard.js"></script>
+</html>

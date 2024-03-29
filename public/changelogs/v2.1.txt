@@ -1,0 +1,6 @@
+V2.1
+
+- Ajout du renvoi d'erreurs sur la page Agenda
+- Ajout d'un cache d'emploi du temps si jamais l'API univ lemans crash (ce qui arrive souvent)
+- Modification de la page 404
+- Optimisations légères

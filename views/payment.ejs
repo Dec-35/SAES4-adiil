@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ADIIL - Panier</title>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/paymentStyle.css" />
+  </head>
+  <body id="paymentBody" data-theme="light">
+    <%- include('header', {cartSize, isLoggedIn}) %>
+    <a href="/" id="backButton">Retour</a>
+    <div class="verticalflex mainContainer">
+      <div class="content title centerFlex">
+        <h3>Panier</h3>
+        <div class="stepSelector centerFlex longFlex">
+          <div class="selector active"></div>
+          <div class="selector"></div>
+        </div>
+        <div class="selectorArrow next nextStepButton"></div>
+      </div>
+      <div class="stepContent content cart centerFlex verticalflex">
+        <ul id="cartList">
+          <li class="headers">
+            <span>
+              <p>Nom</p>
+              <p>Prix</p>
+              <span>
+                <p>Tout sélectionner</p>
+                <div class="toggleSelector" id="allSelector"></div>
+              </span>
+              <div id="deleteButton"></div>
+            </span>
+          </li>
+        </ul>
+        <span class="longFlex centerFlex actionContainer">
+          <h3 id="priceTitle"></h3>
+          <button class="nextStepButton checkout">Valider le panier</button>
+        </span>
+      </div>
+      <div class="stepContent content payStep hidden centerFlex verticalflex">
+        <button id="payButton" class="checkout">Payer</button>
+      </div>
+    </div>
+  </body>
+  <script src="/js/logic.js"></script>
+  <script src="/js/payement.js"></script>
+</html>

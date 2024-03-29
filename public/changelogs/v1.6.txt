@@ -1,0 +1,6 @@
+V1.6
+
+- Ajout du bot discord
+- Ajout des photos de profil
+- Ajout des photos
+- Correction de bugs mineurs

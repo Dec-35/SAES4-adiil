@@ -1,0 +1,8 @@
+V3.0
+
+- Ajout de la boutique :
+  - Liste des produits
+  - Page individuelle par produit
+- Modification du paiement pour accepter les produits
+- Bugfix en lien avec la supression d'items du panier
+- Ajout de données récoltées lors des transactions pour analyse statistique des achats

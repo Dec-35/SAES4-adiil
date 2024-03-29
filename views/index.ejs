@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <script src="https://unpkg.com/ical.js@1.5.0/build/ical.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/he/1.2.0/he.min.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <title>ADIIL</title>
+  </head>
+
+  <body data-theme="light" id="homeBody">
+    <%- include('header', {cartSize, isLoggedIn}) %>
+
+    <span id="top"></span>
+    <div id="accueil">
+      <div>
+        <div id="title">
+          <h1><em>ADIIL</em>, BDE du <br />BUT Info de Laval</h1>
+          <% if(isLoggedIn) { %>
+          <p>Bonjour <%= username %> !</p>
+          <% } else { %>
+          <p>L'équipe de l'ADIIL est là pour t'accompagner durant ton BUT !</p>
+          <% }%>
+        </div>
+      </div>
+
+      <div id="photoGrid">
+        <% homeImages.forEach((image, index)=> { %>
+
+        <img
+          src="/images/home/<%= image %>"
+          class="<% if(index === 0) { %>selected<%} %>"
+          alt=""
+        />
+
+        <% }) %>
+        <div class="indicators">
+          <% for(let i=0; i < homeImages.length; i++) { %>
+          <div class="indicator <% if(i === 0) {%> selected <% }%>"></div>
+          <% } %>
+        </div>
+        <div class="arrows">
+          <div id="leftArrow" onclick="previousImage()" class="arrow"></div>
+          <div id="rightArrow" onclick="nextImage()" class="arrow"></div>
+        </div>
+      </div>
+    </div>
+    <div id="leaderboardContainer">
+      <div
+        id="podium"
+        style="
+          --xp2: <%- podium[1].xp / podium[0].xp * 100 %>%;
+          --xp3: <%- podium[2].xp / podium[0].xp * 100 %>%;
+        "
+      >
+        <div id="firstPlace" class="podiumPosition">
+          <img
+            class="podiumPfp"
+            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+            alt=""
+          />
+          <p><%= podium[0].username %> - <%= podium[0].xp %> xp</p>
+        </div>
+        <div id="secondPlace" class="podiumPosition">
+          <img
+            class="podiumPfp"
+            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+            alt=""
+          />
+          <p><%= podium[1].username %> - <%= podium[1].xp %> xp</p>
+        </div>
+        <div id="thirdPlace" class="podiumPosition">
+          <img
+            class="podiumPfp"
+            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+            alt=""
+          />
+          <p><%= podium[2].username %> - <%= podium[2].xp %> xp</p>
+        </div>
+      </div>
+      <div id="podiumInfo">
+        <h2>Le podium d'xp</h2>
+        <p>Gagne de l'xp en participant aux événements de l'ADIIL</p>
+        <a class="noPaddingLink" href="/leaderboard/">Voir le classement</a>
+      </div>
+    </div>
+    <div id="grades">
+      <h1>Démarre ton aventure !</h1>
+      <div id="gradeGrid">
+        <div class="grade">
+          <img
+            src="https://media.forgecdn.net/avatars/362/344/637529102794456266.png"
+            alt=""
+          />
+          <h2>Iron</h2>
+          <div class="gradeDesc">
+            <h3>Avantages :</h3>
+            <ul>
+              <li>Compétitions de code</li>
+              <li>Accès aux bénéfices du parrainage (bonus d'xp)</li>
+            </ul>
+          </div>
+          <button class="gradeBuyButton b0"><%= ironprice %>€</button>
+        </div>
+        <div class="grade">
+          <img src="/graphics/Gold_Ingot_JE4_BE2.png" alt="" />
+          <h2>Gold</h2>
+          <div class="gradeDesc">
+            <h3>Avantages :</h3>
+            <ul>
+              <li>Avantages Iron</li>
+              <li>Evénements privés</li>
+              <li>Soirées privées du BDE</li>
+            </ul>
+          </div>
+          <button class="gradeBuyButton b1"><%= goldprice %>€</button>
+        </div>
+        <div class="grade">
+          <img src="/graphics/11-2-minecraft-diamond.png" alt="" />
+          <h2>Diamant</h2>
+          <div class="gradeDesc">
+            <h3>Avantages :</h3>
+            <ul>
+              <li>Avantages Gold</li>
+              <li>-10% sur tous les événements du BDE</li>
+              <li>Valable toute l'année</li>
+              <li>1 bon d'achat de 10€ sur l'entièreté du site</li>
+            </ul>
+          </div>
+          <button class="gradeBuyButton b2"><%= diamantprice %>€</button>
+        </div>
+      </div>
+      <p class="disclaimer">
+        Les grades Iron et Gold sont semestriels. Le grade Diamant est annuel.
+      </p>
+    </div>
+    <div id="overlay" class="">
+      <svg
+        id="loader"
+        width="800px"
+        height="800px"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M20.0001 12C20.0001 13.3811 19.6425 14.7386 18.9623 15.9405C18.282 17.1424 17.3022 18.1477 16.1182 18.8587C14.9341 19.5696 13.5862 19.9619 12.2056 19.9974C10.825 20.0328 9.45873 19.7103 8.23975 19.0612"
+          stroke="#efefef"
+          stroke-width="3.55556"
+          stroke-linecap="round"
+        />
+      </svg>
+      <div id="eventCard">
+        <div id="image">
+          <div id="imageInfoOverlay"></div>
+        </div>
+        <div id="description">
+          <h2 id="eventTitle"></h2>
+          <div id="showMore" class="">
+            <button onclick="toggleMoreInfo()">•••</button>
+            <p id="eventDescription"></p>
+            <span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="1em"
+                viewBox="0 0 384 512"
+              >
+                <path
+                  d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+                />
+              </svg>
+              <p id="eventLocation"></p>
+            </span>
+          </div>
+          <div id="eventDate">
+            <svg viewBox="0 0 512 512" width="100" title="clock">
+              <path
+                d="M256,8C119,8,8,119,8,256S119,504,256,504,504,393,504,256,393,8,256,8Zm92.49,313h0l-20,25a16,16,0,0,1-22.49,2.5h0l-67-49.72a40,40,0,0,1-15-31.23V112a16,16,0,0,1,16-16h32a16,16,0,0,1,16,16V256l58,42.5A16,16,0,0,1,348.49,321Z"
+              />
+            </svg>
+            <p id="eventTime"></p>
+          </div>
+          <div id="action">
+            <span>
+              <h3 id="eventPrice"></h3>
+              <p id="priceInfo">(-10% avec le grade diamant)</p>
+            </span>
+
+            <button id="addEvent">S'inscrire</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="evenements">
+      <h1 id="eventsTitle">Les événements</h1>
+      <div id="eventsCalendar"></div>
+    </div>
+    <footer>
+      <ul>
+        <li><a href="/legal">Mentions légales</a></li>
+        <li><a href="/contact">Contact</a></li>
+        <li><a href="/faq">FAQ</a></li>
+      </ul>
+      <p>© 2023 ADIIL (en cours)</p>
+      <p>
+        bdeinfo.fr <%= version %> -
+        <a href="/changelogs/<%= version %>">Changelog</a>
+      </p>
+      <p>
+        Design et développement réalisés par
+        <a href="http://m-legal.fr">Mériadec Legal</a>
+      </p>
+    </footer>
+  </body>
+  <script>
+    const decodedData = JSON.parse('<%- JSON.stringify(events) %>');
+
+    window.calData = decodedData;
+
+    const overlay = document.getElementById('overlay');
+
+    //hide overlay
+    overlay.addEventListener('click', (e) => {
+      const eventCard = document.getElementById('eventCard');
+      if (!eventCard.contains(e.target)) {
+        overlay.classList.remove('visible');
+        document.getElementById('eventCard').classList.remove('visible');
+      }
+    });
+
+    //get the top 3 podium user profile pictures
+    const pfps = document.querySelectorAll('.podiumPfp');
+
+    fetch('/api/user/getPodiumPfps')
+      .then((res) => res.json())
+      .then((data) => {
+        const images = data.images;
+
+        for (let i = 0; i < images.length; i++) {
+          if (images[i] !== null) {
+            pfps[i].src = images[i];
+          }
+        }
+      })
+      .catch((err) => console.log(err));
+
+    const userGrade = '<%= grade %>';
+    console.log(userGrade);
+    if (userGrade !== 'None' && userGrade !== '') {
+      var gradeToDisable = document.querySelector('.b' + userGrade);
+      gradeToDisable.classList.add('disabled');
+      gradeToDisable.innerHTML = 'Déjà acheté';
+      gradeToDisable.disabled = true;
+    }
+    window.userGrade = userGrade;
+
+    function previousImage() {
+      const images = document.querySelectorAll('#photoGrid img');
+      const indicators = document.querySelectorAll('.indicator');
+      let selectedImage = 0;
+      for (let i = 0; i < images.length; i++) {
+        if (images[i].classList.contains('selected')) {
+          selectedImage = i;
+          images[i].classList.remove('selected');
+          indicators[i].classList.remove('selected');
+        }
+      }
+      if (selectedImage === 0) {
+        images[images.length - 1].classList.add('selected');
+        indicators[images.length - 1].classList.add('selected');
+      } else {
+        images[selectedImage - 1].classList.add('selected');
+        indicators[selectedImage - 1].classList.add('selected');
+      }
+    }
+
+    function nextImage() {
+      const images = document.querySelectorAll('#photoGrid img');
+      const indicators = document.querySelectorAll('.indicator');
+      let selectedImage = 0;
+      for (let i = 0; i < images.length; i++) {
+        if (images[i].classList.contains('selected')) {
+          selectedImage = i;
+          images[i].classList.remove('selected');
+          indicators[i].classList.remove('selected');
+        }
+      }
+      if (selectedImage === images.length - 1) {
+        images[0].classList.add('selected');
+        indicators[0].classList.add('selected');
+      } else {
+        images[selectedImage + 1].classList.add('selected');
+        indicators[selectedImage + 1].classList.add('selected');
+      }
+    }
+  </script>
+
+  <script src="/js/logic.js"></script>
+  <script>
+    if (document.body.getAttribute('data-theme') === 'dark') {
+      document.getElementById('themeSwitcher').innerHTML = 'Theme clair';
+    } else {
+      document.getElementById('themeSwitcher').innerHTML = 'Theme sombre';
+    }
+  </script>
+</html>

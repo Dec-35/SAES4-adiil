@@ -1,0 +1,265 @@
+[
+    {
+        "name": "Insérer nom",
+        "members": [
+            "Aubert Antonin",
+            "Akyuz Erhan",
+            "Brault Simon",
+            "Monthouel Alexandre",
+            "Tarot Bastien",
+            "Bourgoin Louna",
+            "Lecourt Manon",
+            "Cocandeau Noé",
+            "Marty Cédric",
+            "Le Roux Guénaël"
+        ],
+        "room": "Tatooine"
+    },
+    {
+        "name": "AZERTY'M",
+        "members": [
+            "Mathis HUTIN",
+            "Rafael AUVERLOT-GARCIA",
+            "Simon DURAND",
+            "Pierrick BREAUD",
+            "Théo CHAPY"
+        ],
+        "room": "Tatooine"
+    },
+    {
+        "name": "Team Scratch",
+        "members": [
+            "Jousse Maxime",
+            "Champy Nicolas",
+            "Adam Loris",
+            "Gasté-Soyer Matthis",
+            "Piton Léandre",
+            "Quéméré Gaël",
+            "Jaffre Nathan",
+            "Foulon Erwan",
+            "Andreoli Enzo",
+            "MARCHAL Côme"
+        ],
+        "room": "LV426"
+    },
+    {
+        "name": "50 nuances d’HTML",
+        "members": [
+            "FREMONDEAU Mattéo",
+            "BENEAT Tangi",
+            "THEBAULT Romain",
+            "COUASNARD Alexis",
+            "DESFORGES Adrien",
+            "BARABINOT Hugo",
+            "BILLAUD Maxime",
+            "BOUILLON Célin",
+            "BRODIN Nathan"
+        ],
+        "room": "LV426"
+    },
+    {
+        "name": "ZéroDodo",
+        "members": [
+            "HAYER Corentyn",
+            "TROUILLARD Tristan",
+            "GRENET Théo",
+            "BENOIT Loan",
+            "LANDAIS Kyllian",
+            "HAMEAU Nathan",
+            "PROUTEAU-QUEFFELEC Eloïse",
+            "CHERBONNEL Timéo",
+            "CHOLET Jonas",
+            "AVENEL Alexis"
+        ],
+        "room": "Westeros"
+    },
+    {
+        "name": "Les Belles Chamelles",
+        "members": [
+            "BURNIER-FRAMBORET Alexis",
+            "ANTONIO Alexandre",
+            "MEGANGE Antoine",
+            "DELAPORTE Corentin",
+            "BOURNE Marin",
+            "FAURE Raphaël",
+            "BUYSSE Arend",
+            "MEDEVIELLE Nolwen",
+            "LE BARON Côme",
+            "BRIAND Jeremie"
+        ],
+        "room": "Westeros"
+    },
+    {
+        "name": "KAM",
+        "members": [
+            "Roulette Maël",
+            "Burah-Montreer Kerian",
+            "Prod'homme Antonin",
+            "Courtabesserie Gabin",
+            "Bakry Charles",
+            "Manon-Maza Noann",
+            "Rivey Alan",
+            "Raymond Pierre-Yves",
+            "Lusson Matisse",
+            "Lafontaine Matthis"
+        ],
+        "room": "Vulcain"
+    },
+    {
+        "name": "Clown.e.s d'un Numérique Utile",
+        "members": [
+            "Sélène PERRIN-MOREL",
+            "Adrien SCHNEIDER",
+            "Gabrielle MULTAN",
+            "Quentin BAHUET",
+            "Axel BÔNE-TELLIER",
+            "Ernest ANDRE",
+            "Landry LEBOSQUAIN",
+            "Gabriel NIERAT",
+            "Rémi LE HENAFF",
+            "Aloïs DE SOUZA COROLLER"
+        ],
+        "room": "Vulcain"
+    },
+    {
+        "name": "Les petits trains",
+        "members": [
+            "JOBLET Aurèle",
+            "GAUTIER-GRALL Maxence",
+            "CLOWEZ Tristan",
+            "BRANCHU Victor",
+            "FRANVILLE Timéo",
+            "RUBAUD Ilan",
+            "BOBILLE Raphaël",
+            "QUELO Ewan"
+        ],
+        "room": "Gotham"
+    },
+    {
+        "name": "Tux",
+        "members": [
+            "LE GAC Loëvan",
+            "DERACHE Adrien",
+            "GOUBAUD Pierre",
+            "Briand Émilio",
+            "Glet Thomas"
+        ],
+        "room": "Gotham"
+    },
+    {
+        "name": "Shaolin Boulette",
+        "members": [
+            "CLEMENT Morgan",
+            "MABIRE Wilfried",
+            "GESLIN Mathys",
+            "ASTOUL Noé",
+            "HETUIN Nils",
+            "Orgé Mathéo",
+            "BARRIER Firmin",
+            "MOREIRA VIDAL PEREIRA Gustavo"
+        ],
+        "room": "Azeroth"
+    },
+    {
+        "name": "keskonféhencorla",
+        "members": [
+            "COIGNAC Antoine",
+            "MANCINI Noémie",
+            "BELAUD Owen",
+            "TEXIER Loan",
+            "HAUTBOIS Youenn"
+        ],
+        "room": "Azeroth"
+    },
+    {
+        "name": "4A FIeStA dev",
+        "members": [
+            "Etienne FERRE",
+            "Viveka MADOMERCANDY",
+            "Malo MÉNARD",
+            "Thomas PAMANTUNG",
+            "Matéo LAMBERT",
+            "Maxime PANCRAT"
+        ],
+        "room": "Hyrule"
+    },
+    {
+        "name": "4A FIeStA prod",
+        "members": [
+            "Nicolas NADÉ",
+            "Alexandre BONADÉ",
+            "Mathéo BIDEAULT",
+            "Martin LEDROIT",
+            "Albin LADISLAS",
+            "Lenny LOUIS",
+            "Tristan MAISONNEUVE",
+            "Alexis DALLE"
+        ],
+        "room": "Hyrule"
+    },
+    {
+        "name": "Les Détraqués",
+        "members": [
+            "GAUTIER Tristan",
+            "MARTINELLE Lucas",
+            "BRATIGNY Arthur",
+            "COSSON Emilien",
+            "WALQUAN Juliette",
+            "PRACONTÉ Samuel",
+            "GAUDIN Cyprien",
+            "PORCHET Damien",
+            "ZUCCARINI Maxime",
+            "LE COUAZER César",
+            "BOURDON Clara"
+        ],
+        "room": "Tamriel"
+    },
+    {
+        "name": "TeamOrga",
+        "members": [
+            "BUHOT Ewen",
+            "Catalon Arkan",
+            "Vigouroux Johanne",
+            "Lehenaff killian"
+        ],
+        "room": "Tamriel"
+    },
+    {
+        "name": "Iris",
+        "members": [
+            "VINCINI Mathilde",
+            "KERLOC'H Emiliano",
+            "ROSSIGNOL Natanael",
+            "SALIN Emma",
+            "PIAU Lucas",
+            "PLATON Mathis",
+            "HARDY Lucas"
+        ],
+        "room": "Mordor"
+    },
+    {
+        "name": "les JanProg",
+        "members": [
+            "LANGLAIS Victor",
+            "DALIBARD Gabin",
+            "DANG Denis",
+            "DENEUX Gregory",
+            "GOUY Noé",
+            "Goujon Robin",
+            "ALPHONSINE Eleowenn",
+            "COURTY Nolann",
+            "DOUTEZ Alexis"
+        ],
+        "room": "Mordor"
+    },
+    {
+        "name": "Les Petits Écoliers",
+        "members": [
+            "EVEILLEAUX Ethan",
+            "PELÉ Thomas",
+            "MINEVICH Daniil",
+            "POIRON Kelig"
+        ],
+        "room": "Mordor"
+    }
+]

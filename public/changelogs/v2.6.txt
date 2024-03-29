@@ -1,0 +1,8 @@
+V2.6
+
+- Ajout de la page Nuit de l'info
+- Mise à jour du backend pour optimiser les tests et les endpoints
+- Réglage de quelques bugs liés au checkout HelloAsso
+- Réglage du bug qui permettait d'ajouter au panier des évenements auxquels on était déjà inscrit
+- Réglage du bug sur le montant du paiement qui causait problème avec HelloAsso et PayPal
+- Réglage de l'xp nulle lors de l'inscription (mise à zero par défaut)
