@@ -60,12 +60,15 @@ router.post('', async (req, res) => {
     }
 
     const price = itemResults['0'].price;
+    console.log('element :', element);
 
     element.price = price;
     totalPrice += price;
     element.name =
       itemResults['0'].name +
-      (element.size != '' ? '(' + element.size + ')' : '');
+      (element.size != undefined && element.size != ''
+        ? '(' + element.size + ')'
+        : '');
   }
 
   const email = req.session.email;
