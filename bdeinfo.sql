@@ -61,6 +61,7 @@ DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
   `price` float DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
@@ -78,12 +79,14 @@ INSERT INTO `event`
 VALUES (
     11028701,
     'Marché de Noël',
+    'Marché de Noël',
     -1,
     '2023-12-21 18:30:00',
     'marche_de_noel.webp'
   ),
   (
     49469041,
+    'Goûter de rentrée',
     'Goûter de rentrée',
     0,
     '2023-09-04 16:00:00',
@@ -92,12 +95,14 @@ VALUES (
   (
     226517193,
     'Gourde ADIIL',
+    'Gourde ADIIL',
     -1,
     '2023-11-06 08:00:00',
     'gourde.webp'
   ),
   (
     239501416,
+    'Nuit de l\'info',
     'Nuit de l\'info',
     0,
     '2023-12-07 15:38:00',
@@ -106,12 +111,14 @@ VALUES (
   (
     341554572,
     'Menu Maxi',
+    'Menu Maxi',
     4.5,
     '2023-12-07 09:00:00',
     'menu_maxi.webp'
   ),
   (
     383910450,
+    'Soirée Haloween',
     'Soirée Haloween',
     -1,
     '2023-10-27 17:30:00',
@@ -429,7 +436,7 @@ VALUES (
     'NULL',
     'NULL'
   ),
-(
+  (
     'admin@univ-lemans.fr',
     'admin',
     '92668751',

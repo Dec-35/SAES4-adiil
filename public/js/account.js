@@ -9,10 +9,17 @@ fetch('/api/user/purchases', {
   .then((res) => res.json())
   .then((data) => {
     if (data.success) {
-      data.purchases.forEach((purchase) => {
-        const itemCard = createItemCard(purchase);
-        achatsContainer.appendChild(itemCard);
-      });
+      console.log(data.purchases);
+      if (data.purchases.length === 0) {
+        const noPurchase = document.createElement('h4');
+        noPurchase.innerText = "Vous n'avez pas encore effectué d'achat";
+        achatsContainer.appendChild(noPurchase);
+      } else {
+        data.purchases.forEach((purchase) => {
+          const itemCard = createItemCard(purchase);
+          achatsContainer.appendChild(itemCard);
+        });
+      }
     } else {
       alert('Error getting user purchases');
     }
@@ -32,10 +39,10 @@ function createItemCard(item) {
   const itemDesc = document.createElement('div');
   itemDesc.classList.add('itemDesc');
   itemDesc.innerHTML = `<h3>${
-    item.name
-  }</h3><p>Acheté le ${item.purchaseDate.toLocaleString(
+    item.item_name
+  }</h3><p>Acheté le ${item.purchase_date.toLocaleString(
     'fr-FR'
-  )}</p><h3 class='itemPrice'>${item.price}</h3>`;
+  )}</p><h3 class='itemPrice'>${item.item_price}</h3>`;
 
   card.appendChild(itemImage);
   card.appendChild(itemDesc);
