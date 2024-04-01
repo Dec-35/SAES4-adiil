@@ -26,12 +26,13 @@ router.get('', async (req, res) => {
       switch (type) {
         case 'event':
           const [event] = await pool.query(
-            'SELECT date, description, image FROM event WHERE id = ?',
+            'SELECT date, description, image, location FROM event WHERE id = ?',
             [purchase.event_id]
           );
           purchase.eventDate = event[0].date;
           purchase.description = event[0].description;
           purchase.image = '/images/events/' + event[0].image;
+          purchase.location = event[0].location;
           break;
 
         case 'grade':
@@ -71,8 +72,6 @@ router.get('', async (req, res) => {
       }
     })
   );
-
-  console.log(purchasesResults);
 
   res.status(200).json({success: true, purchases: purchasesResults});
 });

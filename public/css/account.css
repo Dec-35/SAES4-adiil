@@ -2,6 +2,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+    width: 100%;
+    padding: 0 1rem;
 }
 
 .icons {
@@ -83,7 +85,7 @@
     aspect-ratio: 2/3;
     border-radius: 8px;
     overflow: hidden;
-    border: 2px solid #efefef;
+    border: 2px solid var(--secondary-background-color);
 }
 
 .itemImage {

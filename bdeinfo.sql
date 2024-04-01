@@ -65,6 +65,7 @@ CREATE TABLE `event` (
   `price` float DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */
@@ -82,7 +83,8 @@ VALUES (
     'Marché de Noël',
     -1,
     '2023-12-21 18:30:00',
-    'marche_de_noel.webp'
+    'marche_de_noel.webp',
+    'Département info'
   ),
   (
     49469041,
@@ -90,7 +92,8 @@ VALUES (
     'Goûter de rentrée',
     0,
     '2023-09-04 16:00:00',
-    'gouter_de_rentree.webp'
+    'gouter_de_rentree.webp',
+    'Département info'
   ),
   (
     226517193,
@@ -98,7 +101,8 @@ VALUES (
     'Gourde ADIIL',
     -1,
     '2023-11-06 08:00:00',
-    'gourde.webp'
+    'gourde.webp',
+    'Département info'
   ),
   (
     239501416,
@@ -106,7 +110,8 @@ VALUES (
     'Nuit de l\'info',
     0,
     '2023-12-07 15:38:00',
-    'ndli.webp'
+    'ndli.webp',
+    'Département info'
   ),
   (
     341554572,
@@ -114,7 +119,8 @@ VALUES (
     'Menu Maxi',
     4.5,
     '2023-12-07 09:00:00',
-    'menu_maxi.webp'
+    'menu_maxi.webp',
+    'Département info'
   ),
   (
     383910450,
@@ -122,7 +128,8 @@ VALUES (
     'Soirée Haloween',
     -1,
     '2023-10-27 17:30:00',
-    'soiree_haloween.webp'
+    'soiree_haloween.webp',
+    'Département info'
   );
 /*!40000 ALTER TABLE `event` ENABLE KEYS */
 ;

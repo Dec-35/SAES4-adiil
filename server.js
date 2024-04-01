@@ -234,7 +234,7 @@ async function checkAndAddEventToDatabase(id, event) {
     );
     //add the event to the database
     await pool.query(
-      'INSERT INTO event (id, name, description, price, date, image) VALUES (?, ?, ?, ?, ?, ?)',
+      'INSERT INTO event (id, name, description, price, date, image, location) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [
         id,
         event.summary,
@@ -242,6 +242,7 @@ async function checkAndAddEventToDatabase(id, event) {
         event.price,
         sqlDateTime,
         event.image,
+        event.location,
       ],
       (err) => {
         if (err) {
