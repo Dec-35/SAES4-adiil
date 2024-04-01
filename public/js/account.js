@@ -65,6 +65,10 @@ function showCardDetails(purchase) {
 
   document.getElementById('eventTitle').innerText = purchase.item_name;
 
+  //remove all the children of the showMore div excpet the #eventDescription
+  const showMore = document.getElementById('showMore');
+  showMore.innerHTML = '<p id="eventDescription"></p>';
+
   document.getElementById('eventDescription').innerText = purchase.description;
 
   if (purchase.type === 'event') {
