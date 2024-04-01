@@ -332,19 +332,26 @@ function renderEventsCalendar(events) {
         .then((data) => {
           if (data.success) {
             userEvents = data.events;
+            let isCartItem = false;
 
             userEvents.forEach((eventResult) => {
-              var eventStart = new Date(eventResult.date);
+              var eventStart = new Date(eventResult.event.date);
+              eventStart.setHours(eventStart.getHours() + 2);
               if (
-                eventResult.name === title &&
+                eventResult.event.name === title &&
                 event.start.getTime() === eventStart.getTime()
               ) {
                 found = true;
+                if (eventResult.isCart) {
+                  isCartItem = true;
+                }
               }
             });
 
             if (found) {
-              document.getElementById('eventPrice').innerHTML = 'Inscrit';
+              document.getElementById('eventPrice').innerHTML = isCartItem
+                ? 'Déjà dans le panier'
+                : 'Déjà inscrit';
               document.getElementById('priceInfo').style.display = 'none';
               document.getElementById('addEvent').style.display = 'none';
             } else if (eventPrice === 0) {
