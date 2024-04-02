@@ -94,6 +94,7 @@
 .itemImage {
     flex-grow: 1;
     object-fit: cover;
+    max-height: 60%;
 }
 
 .itemDesc {
@@ -101,6 +102,8 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    justify-content: space-between;
+    flex-grow: 1;
 }
 
 .itemDesc .itemPrice {
@@ -116,8 +119,22 @@
     margin: 0;
 }
 
+#image {
+    background-color: white;
+    background-repeat: no-repeat;
+}
+
 @media only screen and (max-width: 775px) {
     #achats {
         max-height: fit-content;
+    }
+
+    #action {
+        flex-direction: column-reverse;
+    }
+
+    #action>* {
+        width: 100%;
+        max-width: 100% !important;
     }
 }

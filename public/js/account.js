@@ -35,6 +35,11 @@ function createItemCard(item) {
   const itemImage = document.createElement('img');
   itemImage.classList.add('itemImage');
   itemImage.src = item.image;
+  if (item.type === 'grade') {
+    itemImage.style.setProperty('object-fit', 'scale-down');
+  } else {
+    itemImage.style.setProperty('object-fit', 'cover');
+  }
 
   const itemDesc = document.createElement('div');
   itemDesc.classList.add('itemDesc');
@@ -62,6 +67,12 @@ function showCardDetails(purchase) {
 
   const itemImage = document.getElementById('image');
   itemImage.style.setProperty('--image-url', `url(${purchase.image})`);
+
+  if (purchase.type === 'grade') {
+    itemImage.style.setProperty('background-size', 'auto 90%');
+  } else {
+    itemImage.style.setProperty('background-size', 'cover');
+  }
 
   document.getElementById('eventTitle').innerText = purchase.item_name;
 
