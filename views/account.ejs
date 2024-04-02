@@ -292,18 +292,6 @@
 
     const grade = '<%= grade %>';
 
-    if (grade === 'None') {
-      document.querySelector('.unsub').remove();
-      document.querySelector('.desabonner.firstOne').innerHTML = '';
-      document.querySelector('.gradeContainer').classList.add('active');
-    } else {
-      document
-        .querySelectorAll('.gradeContainer')
-        [['Iron', 'Gold', 'Diamant'].indexOf(grade) + 1].classList.add(
-          'active'
-        );
-    }
-
     
     if (grade !== 'None' && grade !== '') {
       var selector = '.' + grade.toLowerCase();
@@ -312,6 +300,11 @@
       gradeToDisable.classList.add('disabled');
       gradeToDisable.innerHTML = 'Déjà acheté';
       gradeToDisable.disabled = true;
+      gradeToDisable.parentElement.parentElement.classList.add('active');
+    } else{
+      document.querySelector('.unsub').remove();
+      document.querySelector('.desabonner.firstOne').innerHTML = '';
+      document.querySelector('.gradeContainer').classList.add('active');
     }
 
     document.getElementById('gradeInfo').scrollLeft =
