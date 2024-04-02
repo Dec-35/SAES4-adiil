@@ -61,9 +61,11 @@ DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
   `price` float DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */
@@ -78,44 +80,56 @@ INSERT INTO `event`
 VALUES (
     11028701,
     'Marché de Noël',
+    'Marché de Noël',
     -1,
     '2023-12-21 18:30:00',
-    'marche_de_noel.webp'
+    'marche_de_noel.webp',
+    'Département info'
   ),
   (
     49469041,
     'Goûter de rentrée',
+    'Goûter de rentrée',
     0,
     '2023-09-04 16:00:00',
-    'gouter_de_rentree.webp'
+    'gouter_de_rentree.webp',
+    'Département info'
   ),
   (
     226517193,
     'Gourde ADIIL',
+    'Gourde ADIIL',
     -1,
     '2023-11-06 08:00:00',
-    'gourde.webp'
+    'gourde.webp',
+    'Département info'
   ),
   (
     239501416,
     'Nuit de l\'info',
+    'Nuit de l\'info',
     0,
     '2023-12-07 15:38:00',
-    'ndli.webp'
+    'ndli.webp',
+    'Département info'
   ),
   (
     341554572,
     'Menu Maxi',
+    'Menu Maxi',
     4.5,
     '2023-12-07 09:00:00',
-    'menu_maxi.webp'
+    'menu_maxi.webp',
+    'Département info'
   ),
   (
     383910450,
     'Soirée Haloween',
+    'Soirée Haloween',
     -1,
     '2023-10-27 17:30:00',
-    'soiree_haloween.webp'
+    'soiree_haloween.webp',
+    'Département info'
   );
 /*!40000 ALTER TABLE `event` ENABLE KEYS */
 ;
@@ -429,7 +443,7 @@ VALUES (
     'NULL',
     'NULL'
   ),
-(
+  (
     'admin@univ-lemans.fr',
     'admin',
     '92668751',

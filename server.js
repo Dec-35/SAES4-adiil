@@ -234,8 +234,16 @@ async function checkAndAddEventToDatabase(id, event) {
     );
     //add the event to the database
     await pool.query(
-      'INSERT INTO event (id, name, price, date, image) VALUES (?, ?, ?, ?, ?)',
-      [id, event.summary, event.price, sqlDateTime, event.image],
+      'INSERT INTO event (id, name, description, price, date, image, location) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [
+        id,
+        event.summary,
+        event.description,
+        event.price,
+        sqlDateTime,
+        event.image,
+        event.location,
+      ],
       (err) => {
         if (err) {
           console.error('Impossible to add an event :', err);
@@ -484,6 +492,9 @@ app.use('/api/user/getAgenda', getEvents);
 
 import getEventsUser from './api/user/getEventsUser.js';
 app.use('/api/user/getEventsUser', getEventsUser);
+
+import getUserPurchases from './api/user/getPurchases.js';
+app.use('/api/user/purchases', getUserPurchases);
 
 import getPodiumPfps from './api/user/getPodiumPfps.js';
 app.use('/api/user/getPodiumPfps', getPodiumPfps);

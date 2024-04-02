@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/account.css" />
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
 
@@ -25,7 +26,7 @@
           >Grade</a
         >
         <a class="vanLink" onclick="setActiveNav(this)" href="#hspacer4"
-          >Inscriptions</a
+          >Achats</a
         >
 
         <button id="themeSwitcher" onclick="switchTheme(this)">
@@ -209,18 +210,36 @@
         </div>
         <div class="vspacer"></div>
         <div class="spacer" id="hspacer4"></div>
-        <h2 class="sectionTitle">Inscriptions aux événements</h2>
-        <h4 class="informativeTitleText">
-          Pour vous désinscrire, merci de
-          <a style="padding: 0" href="/contact">contacter</a> l'ADIIL et
-          demander une désinscription à l'évennement.
-        </h4>
-        <div id="eventList"></div>
+        <h2 class="sectionTitle">Achats</h2>
+        <div id="achats">
+
+        </div>
         <div class="vspacer"></div>
+      </div>
+    </div>
+    <div id="overlay" class="">
+      <div id="eventCard" class="visible">
+        <div id="image">
+        </div>
+        <div id="description">
+          <h2 id="eventTitle"></h2>
+          <div id="showMore" class="expanded">
+            <p id="eventDescription"></p>
+          </div>
+          <div class="divider"></div>
+          <div id="action">
+            <button id="remboursementButton">Demander un remboursement</button>
+            <div id="priceAndDate">
+              <h3 id="itemCardPrice"></h3>
+              <p></p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </body>
   <script src="/js/logic.js"></script>
+  <script src="/js/account.js"></script>
   <script>
     if (document.body.getAttribute('data-theme') == 'dark') {
       document.querySelector('button').innerHTML = 'Theme clair';
@@ -285,37 +304,7 @@
         );
     }
 
-    fetch('/api/user/getEventsUser', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          const events = data.events;
-          const eventList = document.createElement('ul');
-
-          events.forEach((event) => {
-            const eventItem = document.createElement('li');
-            const date = new Date(event.date).toLocaleDateString('fr-FR');
-            var time = new Date(event.date).toLocaleTimeString('fr-FR');
-            //remove the seconds
-            time = time.slice(0, -3);
-
-            eventItem.innerHTML = event.name + ' - ' + date + ' à ' + time;
-            eventList.appendChild(eventItem);
-          });
-          document.getElementById('eventList').appendChild(eventList);
-
-          document.getElementById('eventNum').innerHTML =
-            'Vous avez participé à ' + events.length + ' événements.';
-        } else {
-          alert('Error getting user events');
-        }
-      });
-
+    
     if (grade !== 'None' && grade !== '') {
       var selector = '.' + grade.toLowerCase();
 
