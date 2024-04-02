@@ -43,7 +43,10 @@ router.post('', upload.single('image'), async (req, res) => {
       color,
       sizes,
     } = req.body;
-
+    if (price < 0){
+      res.status(403).json({success: false, message: 'price cannot be lower then 0'});
+      return;
+    }
     if (confirm_threashold === '' || confirm_threashold === '0') {
       confirm_threashold = null;
     }
