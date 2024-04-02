@@ -313,9 +313,9 @@ LOCK TABLES `product_size` WRITE;
 INSERT INTO `product_size`
 VALUES (2, 's'),
   (2, 'xl'),
-  (2, ' xxl'),
-  (2, ' l'),
-  (2, ' m');
+  (2, 'xxl'),
+  (2, 'l'),
+  (2, 'm');
 /*!40000 ALTER TABLE `product_size` ENABLE KEYS */
 ;
 UNLOCK TABLES;
