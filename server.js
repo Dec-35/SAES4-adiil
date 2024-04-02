@@ -1,17 +1,26 @@
 import express from 'express';
-import {createPool} from 'mysql2';
-import {json} from 'express';
+import {
+  createPool
+} from 'mysql2';
+import {
+  json
+} from 'express';
 
 import session from 'express-session';
 
-import {readFileSync, readdirSync} from 'fs';
+import {
+  readFileSync,
+  readdirSync
+} from 'fs';
 
 import https from 'https';
 import http from 'http';
 
 import dotenv from 'dotenv';
 dotenv.config();
-import {fromURL} from 'node-ical';
+import {
+  fromURL
+} from 'node-ical';
 
 const pool = createPool({
   connectionLimit: 10,
@@ -21,7 +30,9 @@ const pool = createPool({
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
 }).promise();
-export {pool};
+export {
+  pool
+};
 
 const app = express();
 
@@ -31,7 +42,9 @@ let diamantprice;
 
 import Banner from './Banner.js';
 var banner = new Banner();
-export {banner};
+export {
+  banner
+};
 
 app.set('view engine', 'ejs');
 
@@ -183,7 +196,10 @@ async function getPodium(req) {
   );
 
   while (podiumResults.length < 3) {
-    podiumResults.push({username: 'Anonyme', xp: 0});
+    podiumResults.push({
+      username: 'Anonyme',
+      xp: 0
+    });
   }
 
   req.session.podium = podiumResults;
@@ -229,8 +245,7 @@ async function checkAndAddEventToDatabase(id, event) {
     const date = new Date(event.start);
     const sqlDateTime = date.toISOString().slice(0, 19).replace('T', ' ');
     console.log(
-      'Adding this event to the events table:' +
-        [id, event.summary, event.price, sqlDateTime]
+      'Adding this event to the events table:' + [id, event.summary, event.price, sqlDateTime]
     );
     //add the event to the database
     await pool.query(
@@ -292,10 +307,10 @@ async function addUserToEventWithXp(
   if (type === 'grade') {
     console.log(
       'Paiement valide. Ajout du grade ' +
-        name +
-        ' a l utilisateur ' +
-        email +
-        '.'
+      name +
+      ' a l utilisateur ' +
+      email +
+      '.'
     );
 
     // Update the user's grade
@@ -322,10 +337,10 @@ async function addUserToEventWithXp(
     //check if the user is already registered to the event
     console.log(
       'Paiement valide. Ajout de l utilisateur ' +
-        email +
-        ' a l evenement ' +
-        name +
-        '.'
+      email +
+      ' a l evenement ' +
+      name +
+      '.'
     );
     const [inscriptionResults] = await pool.query(
       'SELECT name FROM inscription JOIN event ON inscription.event_id = event.id WHERE user = ? AND event_id = ?',
@@ -408,10 +423,9 @@ async function addUserToEventWithXp(
       if (usersToRenewResults.length === 0) {
         //add the user and the grade to the usersToRenew table
         console.log('Adding user the users to renew list');
-        console.log(req.session.grade);
         const [gradeResults] = await pool.query(
           'SELECT id FROM grade WHERE name = ?',
-          [req.session.grade]
+          name
         );
         const gradeId = gradeResults['0'].id;
 
@@ -435,9 +449,9 @@ async function deleteItemFromCart(req, item) {
 
   const itemIndex = req.session.cart.findIndex(
     (cartItem) =>
-      (cartItem.id.toString() === item.id.toString() &&
-        cartItem.type === item.type) ||
-      (cartItem.id === item.id && cartItem.type === item.type)
+    (cartItem.id.toString() === item.id.toString() &&
+      cartItem.type === item.type) ||
+    (cartItem.id === item.id && cartItem.type === item.type)
   );
 
   if (itemIndex !== -1) {
@@ -451,11 +465,11 @@ async function sendEmail(reciever, subject, passcode, reason) {
 
   console.log(
     'Envoi du mail de vérification à ' +
-      reciever +
-      ' pour la raison ' +
-      reason +
-      ' avec le code ' +
-      passcode
+    reciever +
+    ' pour la raison ' +
+    reason +
+    ' avec le code ' +
+    passcode
   );
 
   //TODO
@@ -604,7 +618,9 @@ app.get('/api/changelogs/:version', (req, res) => {
   const changelog = readFileSync(`./public/changelogs/${version}.txt`, 'utf-8');
   const changelogArray = changelog.split('\n');
 
-  res.json({changelogArray});
+  res.json({
+    changelogArray
+  });
 });
 
 app.get('/api/getChangelogs', (req, res) => {
@@ -617,14 +633,21 @@ app.get('/api/getChangelogs', (req, res) => {
     changelogsArray.push(changelog.substring(0, changelog.length - 4));
   });
 
-  res.json({changelogsArray});
+  res.json({
+    changelogsArray
+  });
 });
 
 app.post('/removeItemFromCartPort', async (req, res) => {
-  var {id} = req.body;
+  var {
+    id
+  } = req.body;
   if (id === 'all') {
     req.session.cart = [];
-    res.status(200).json({success: true, message: 'Cart cleared'});
+    res.status(200).json({
+      success: true,
+      message: 'Cart cleared'
+    });
     return;
   }
 
@@ -637,7 +660,10 @@ app.post('/removeItemFromCartPort', async (req, res) => {
 });
 
 app.post('/addItemToCartPort', (req, res) => {
-  const {id, size} = req.body;
+  const {
+    id,
+    size
+  } = req.body;
   //get item type from header
   const type = req.headers['item-type'];
 
@@ -649,16 +675,29 @@ app.post('/addItemToCartPort', (req, res) => {
 
   if (!item) {
     if (size !== undefined && size !== null && type === 'product') {
-      req.session.cart.push({type: type, id: id, size: size}); // add the item to the cart if it doesn't exist yet
-    } else req.session.cart.push({type: type, id: id}); // add the item to the cart if it doesn't exist yet
+      req.session.cart.push({
+        type: type,
+        id: id,
+        size: size
+      }); // add the item to the cart if it doesn't exist yet
+    } else req.session.cart.push({
+      type: type,
+      id: id
+    }); // add the item to the cart if it doesn't exist yet
   } else {
     res
       .status(409)
-      .json({success: false, message: 'Item déjà dans votre panier'});
+      .json({
+        success: false,
+        message: 'Item déjà dans votre panier'
+      });
     return;
   }
 
-  res.status(200).json({success: true, message: 'Item added to cart'});
+  res.status(200).json({
+    success: true,
+    message: 'Item added to cart'
+  });
 });
 
 app.get('/api/account/logout', (req, res) => {
@@ -668,7 +707,9 @@ app.get('/api/account/logout', (req, res) => {
 });
 
 app.post('/loginStatus', (req, res) => {
-  res.json({isLoggedIn: !!req.session.isLoggedIn});
+  res.json({
+    isLoggedIn: !!req.session.isLoggedIn
+  });
 });
 
 app.get('*', function (req, res) {
@@ -704,8 +745,7 @@ import fs from 'fs';
 
 const PORT = process.env.PORT || 443;
 https
-  .createServer(
-    {
+  .createServer({
       key: fs.readFileSync('server-key.pem'),
       cert: fs.readFileSync('server-cert.pem'),
     },
