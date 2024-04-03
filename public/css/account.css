@@ -19,6 +19,13 @@
     padding-bottom: 0.5em;
 }
 
+#overlay p#canceled {
+    font-size: 1rem;
+    width: 100%;
+    text-align: center;
+    color: red;
+}
+
 #showMore {
     width: 90%;
     align-items: start;
@@ -70,6 +77,7 @@
 
 #action #priceAndDate {
     text-align: right;
+    flex-grow: 1;
 }
 
 #action #priceAndDate p {
@@ -89,6 +97,19 @@
     overflow: hidden;
     border: 2px solid var(--secondary-background-color);
     cursor: pointer;
+    position: relative;
+}
+
+.itemCard.canceled::before {
+    content: 'Annulé';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: fit-content;
+    text-align: center;
+    padding: 4px;
+    background: rgb(173, 0, 0);
+    color: white;
 }
 
 .itemImage {
