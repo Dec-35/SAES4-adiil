@@ -1,4 +1,3 @@
-
 //get color theme cookie
 function getCookie(cname) {
   var name = cname + '=';
@@ -483,40 +482,38 @@ gradeButtons.forEach((button) => {
             "Quelque chose s'est mal passé, merci de réessayer plus tard. Si le probleme persiste, merci de le signaler aupres de l'adiil."
           );
       */
-    //get the user's grade redeclaration import issue due to code's structure
-    fetch('/api/user/userStats')
-    console.debug(grade)
+      //get the user's grade redeclaration import issue due to code's structure
 
-     if (false){
-      fetch('/addItemToCartPort', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'item-type': 'grade',
-        },
-        body: JSON.stringify({
-          id: e.target.classList[1][1],
-        }),
-      })
-        .then((res) => {
-          if (res.status === 200) {
-            userAlertGood('Grade ajouté au panier');
-            setTimeout(() => {
-              window.location.href = '/pay';
-            }, 1000);
-          }
-          return res.json();
+      if (e.target.classList[1][1] > window.userGrade) {
+        fetch('/addItemToCartPort', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'item-type': 'grade',
+          },
+          body: JSON.stringify({
+            id: e.target.classList[1][1],
+          }),
         })
-        .then((data) => {
-          if (!data.success) {
-            userAlert(data.message);
-          }
-        });
-     }else {
-      userAlert(
-        "Vous ne pouvez pas acheter de grade de rang inférieur a celui que vous possédez actuelement Si le probleme persiste, merci de le signaler aupres de l'adiil."
-      );
-     }
+          .then((res) => {
+            if (res.status === 200) {
+              userAlertGood('Grade ajouté au panier');
+              setTimeout(() => {
+                window.location.href = '/pay';
+              }, 1000);
+            }
+            return res.json();
+          })
+          .then((data) => {
+            if (!data.success) {
+              userAlert(data.message);
+            }
+          });
+      } else {
+        userAlert(
+          'Vous ne pouvez pas acheter de grade de rang inférieur a celui que vous possédez actuelement.'
+        );
+      }
     }
   });
 });

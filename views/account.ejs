@@ -272,6 +272,7 @@
     }
 
     const grade = '<%= grade %>';
+    window.userGrade = parseInt(grade);
 
     if (grade === 'None') {
       document.querySelector('.unsub').remove();
