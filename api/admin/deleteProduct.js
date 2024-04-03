@@ -20,7 +20,7 @@ import {
     pool
 } from '../../server.js';
 
-router.post('', async (req, res) => {
+router.post('', upload.single('image'), async (req, res) => {
     try {
         if (!req.session.isLoggedIn || req.session.category !== 'admin') {
             //delete the uploaded file
@@ -38,37 +38,23 @@ router.post('', async (req, res) => {
         if (!id) {
             res.status(403).json({
                 success: false,
-                message: 'No ID provided for deletion'
+                message: 'No ID provided for update'
             });
             return;
         }
 
-        await pool
+        // Mise à jour de l'attribut is_available à false dans la table product
+        await pool.query(
+            'UPDATE product SET is_available = false WHERE id = ?',
+            [id]
+        );
 
-            .query(
-                'DELETE FROM product WHERE id = ?',
-                [id]
-            )
-            .then(() => {
-                res.status(200).json({
-                    success: true,
-                    message: 'Produit bien supprimé'
-                });
-            })
-            .catch((err) => {
-                console.error(
-                    'Erreur lors du traitement de la requête SQL de suppression du produit :',
-                    err
-                );
-                // Gérer l'erreur comme vous le souhaitez
-                res.status(500).json({
-                    success: false,
-                    message: err
-                });
-                return;
-            });
+        res.status(200).json({
+            success: true,
+            message: 'Produit désactivé'
+        });
     } catch (err) {
-        console.error('Erreur lors de la suppression du produit :', err);
+        console.error('Erreur lors de la mise à jour du produit :', err);
         // Gérer l'erreur comme vous le souhaitez
         res.status(500).json({
             success: false,
