@@ -523,6 +523,3 @@ DROP USER 'bdereader' @'localhost';
 CREATE USER 'bdereader' @'localhost' IDENTIFIED BY 'your_password';
 GRANT SELECT ON bdeinfo.* TO 'bdereader' @'localhost';
 FLUSH PRIVILEGES;
-CREATE TABLE proprietaire (nom VARCHAR(255));
-INSERT INTO proprietaire (nom)
-VALUES ('DEC35');
