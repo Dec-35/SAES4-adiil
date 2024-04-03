@@ -449,7 +449,7 @@ if (window.calData !== undefined) {
 
   renderEventsCalendar(filteredEvents);
 }
-
+// action update grade
 const gradeButtons = document.querySelectorAll('.gradeBuyButton');
 gradeButtons.forEach((button) => {
   button.addEventListener('click', (e) => {
@@ -476,30 +476,44 @@ gradeButtons.forEach((button) => {
         }
       });
     } else {
-      fetch('/addItemToCartPort', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'item-type': 'grade',
-        },
-        body: JSON.stringify({
-          id: e.target.classList[1][1],
-        }),
-      })
-        .then((res) => {
-          if (res.status === 200) {
-            userAlertGood('Grade ajouté au panier');
-            setTimeout(() => {
-              window.location.href = '/pay';
-            }, 1000);
-          }
-          return res.json();
+      /* TODO comprendre comment recup le grade
+      if le grade est bien suppérieur... else 
+      userAlert(
+            "Quelque chose s'est mal passé, merci de réessayer plus tard. Si le probleme persiste, merci de le signaler aupres de l'adiil."
+          );
+      */
+      //get the user's grade redeclaration import issue due to code's structure
+
+      if (e.target.classList[1][1] > window.userGrade) {
+        fetch('/addItemToCartPort', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'item-type': 'grade',
+          },
+          body: JSON.stringify({
+            id: e.target.classList[1][1],
+          }),
         })
-        .then((data) => {
-          if (!data.success) {
-            userAlert(data.message);
-          }
-        });
+          .then((res) => {
+            if (res.status === 200) {
+              userAlertGood('Grade ajouté au panier');
+              setTimeout(() => {
+                window.location.href = '/pay';
+              }, 1000);
+            }
+            return res.json();
+          })
+          .then((data) => {
+            if (!data.success) {
+              userAlert(data.message);
+            }
+          });
+      } else {
+        userAlert(
+          'Vous ne pouvez pas acheter de grade de rang inférieur a celui que vous possédez actuelement.'
+        );
+      }
     }
   });
 });

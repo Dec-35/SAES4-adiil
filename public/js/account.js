@@ -32,6 +32,10 @@ function createItemCard(item) {
     showCardDetails(item);
   };
 
+  if (item.is_canceled) {
+    card.classList.add('canceled');
+  }
+
   const itemImage = document.createElement('img');
   itemImage.classList.add('itemImage');
   itemImage.src = item.image;
@@ -74,7 +78,18 @@ function showCardDetails(purchase) {
     itemImage.style.setProperty('background-size', 'cover');
   }
 
+  document.getElementById('eventTitle').innerHTML = '';
   document.getElementById('eventTitle').innerText = purchase.item_name;
+  if (purchase.is_canceled) {
+    const canceled = document.createElement('p');
+    canceled.id = 'canceled';
+    canceled.innerText = 'Annulé';
+    document.getElementById('eventTitle').appendChild(canceled);
+
+    document.getElementById('remboursementButton').style.display = 'none';
+  } else {
+    document.getElementById('remboursementButton').style.display = 'block';
+  }
 
   //remove all the children of the showMore div excpet the #eventDescription
   const showMore = document.getElementById('showMore');

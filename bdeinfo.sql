@@ -374,6 +374,7 @@ CREATE TABLE `transactionContent` (
   `product_id` int(11) DEFAULT NULL,
   `item_name` varchar(255) DEFAULT NULL,
   `item_price` float DEFAULT NULL,
+  `is_canceled` tinyint(1) DEFAULT 0,
   KEY `event_id` (`event_id`),
   KEY `grade_id` (`grade_id`),
   KEY `transaction_id` (`transaction_id`),
