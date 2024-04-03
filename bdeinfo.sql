@@ -221,6 +221,7 @@ CREATE TABLE `product` (
   `confirm_threashold` int(11) DEFAULT NULL,
   `color` varchar(255) DEFAULT NULL,
   `is_promoted` int(1) DEFAULT NULL,
+  `is_available` int (1) DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */
@@ -242,6 +243,7 @@ VALUES (
     '2024-02-15 20:00:00',
     NULL,
     'bleu-marine',
+    1,
     1
   ),
   (
@@ -254,7 +256,8 @@ VALUES (
     '2024-06-30 23:59:00',
     NULL,
     NULL,
-    0
+    0,
+    1
   );
 /*!40000 ALTER TABLE `product` ENABLE KEYS */
 ;
