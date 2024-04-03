@@ -37,6 +37,7 @@ router.get('', async (req, res) => {
       diamantprice,
       xpAmount: process.env.XP_AMOUNT,
       xpThreshold: process.env.XP_THRESHOLD,
+      president: process.env.OWNER
     });
   } catch (err) {
     console.error('Erreur lors du traitement des requêtes SQL :', err);
