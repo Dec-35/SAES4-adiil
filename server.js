@@ -172,7 +172,7 @@ import product from './router/product.js';
 app.use('/shop/product', product);
 
 app.get('/legal', (req, res) => {
-  res.render('legal');
+  res.render('legal', {president:process.env.OWNER});
 });
 
 app.get('/contact', (req, res) => {
@@ -608,6 +608,9 @@ app.use('/api/account/checkPasscode', checkPassCode);
 
 import changeBanner from './api/admin/changeBanner.js';
 app.use('/api/admin/changeBanner', changeBanner);
+
+import changePresident from './api/admin/changePresident.js';
+app.use('/api/admin/changePresident', changePresident);
 
 import changeXpThreshold from './api/admin/changeXpThreshold.js';
 app.use('/api/admin/changeXpThreshold', changeXpThreshold);

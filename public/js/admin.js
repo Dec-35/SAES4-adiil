@@ -20,3 +20,4 @@ function removeParticipant(email, eventId, type) {
     }
   });
 }
+

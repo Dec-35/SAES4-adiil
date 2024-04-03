@@ -17,7 +17,14 @@
       <button id="themeSwitcher" class="headerButton" onclick="switchTheme(this)">Theme sombre</button>
       <a href="/admin/products/" class="adminButton">Gérer les produits</a>
     </div>
+    <form class="adminItem adminForm" id="presidentForm">
+      <h3>Nom du président :</h3>
+      <span>
+        <input type="text" id="presidentInput" placeholder="<%=president%>"></input>
+        <button class="adminButton" > Valider </button>
 
+      </span>
+    </form>
     <div class="adminItem" id="changePrice">
       <h3>Prix des grades :</h3>
       <div>
@@ -216,6 +223,30 @@
 
       return firstName + ' ' + lastName;
     };
+
+    document.getElementById('presidentForm').addEventListener('submit', (e) =>{
+      e.preventDefault();
+
+      const presidentName = document.getElementById('presidentInput').value;
+
+      fetch('/api/admin/changePresident', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({president :presidentName}),
+        }).then((res) => {
+          if (res.status === 200) {
+            userAlertGood('Nom du président changé !');
+            
+          } else {
+            return res.json().then((data) => {
+              userAlert(data.error);
+            });
+          }
+        });
+
+    })
 
     
 
