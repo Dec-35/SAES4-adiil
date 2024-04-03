@@ -593,6 +593,9 @@ app.use('/api/admin/product/add', addProduct);
 import editProduct from './api/admin/editProduct.js';
 app.use('/api/admin/product/edit', editProduct);
 
+import deleteProduct from './api/admin/deleteProduct.js';
+app.use('/api/admin/product/delete', deleteProduct);
+
 import getProducts from './api/admin/getProducts.js';
 app.use('/api/admin/products', getProducts);
 
