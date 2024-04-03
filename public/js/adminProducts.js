@@ -307,9 +307,11 @@ function showSales(id) {
     searchUserResults.setAttribute('id', 'searchUserResults');
 
     product.sales.forEach((sale) => {
+      const saleSpan = document.createElement('span');
       const saleDiv = document.createElement('div');
       saleDiv.classList.add('sale');
       saleDiv.title = 'Vendu le ' + new Date(sale.date).toLocaleString('fr-FR');
+
       const saleUser = document.createElement('p');
       let userEmail = sale.buyer;
       //remove etu@univ-lemans.fr if it exists in the email to extract the name
@@ -336,8 +338,18 @@ function showSales(id) {
           'Taille et/ou couleur : ' + sale.product_details.toUpperCase();
         saleDiv.appendChild(itemDetails);
       }
+      saleSpan.appendChild(saleDiv);
 
-      searchUserResults.appendChild(saleDiv);
+      const participantButton = document.createElement('button');
+      participantButton.innerText = 'Supprimer';
+      participantButton.setAttribute(
+        'onclick',
+        `removeParticipant('${sale.buyer}', '${id}', 'product')`
+      );
+      participantButton.classList.add('adminButton');
+      saleSpan.appendChild(participantButton);
+
+      searchUserResults.appendChild(saleSpan);
       salesTotalPrice += sale.price;
     });
 
@@ -457,7 +469,9 @@ function addBuyerToEvent(eventId) {
               userName.classList.add('clickable');
               userName.innerText = user.email + ' (' + user.username + ')';
               userDiv.appendChild(userName);
-              userDiv.addEventListener('click', (e) => { addBuyer(eventId, user.email)});
+              userDiv.addEventListener('click', (e) => {
+                addBuyer(eventId, user.email);
+              });
               searchUserResults.appendChild(userDiv);
             });
           }
@@ -480,7 +494,7 @@ function addBuyer(productId, email) {
   const options = prompt(
     'Taille et/ou couleur (laisser vide si non-applicable)'
   );
-  if(options === null) return;
+  if (options === null) return;
 
   fetch('/api/admin/products/addBuyer', {
     method: 'POST',
