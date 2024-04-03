@@ -29,6 +29,7 @@ router.post('', async (req, res) => {
 
     res.status(200).json({success: true, results});
   } catch (err) {
+    console.error(err);
     res
       .status(500)
       .json({results: 'Erreur lors du traitement de la requête SQL : ' + err});
