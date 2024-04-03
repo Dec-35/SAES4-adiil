@@ -32,8 +32,32 @@ function closePopup() {
 
 
 function deleteProduct(id) {
-  console.log(id);
+  fetch('/api/admin/product/delete', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json' // Indique que le corps de la requête est au format JSON
+      },
+      body: JSON.stringify({
+        id: id
+      }) // Convertit l'objet JavaScript en chaîne JSON
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        userAlertGood(data.message);
+        closePopup();
+        location.reload();
+      } else {
+        userAlert(data.message);
+      }
+    })
+    .catch((error) => {
+      console.error('Erreur lors de la requête de suppression du produit:', error);
+      // Gérer l'erreur comme vous le souhaitez
+      userAlert('Erreur lors de la suppression du produit. Veuillez réessayer plus tard.');
+    });
 }
+
 
 function modifyProduct(e) {
   e.preventDefault();
@@ -315,9 +339,11 @@ function showSales(id) {
     searchUserResults.setAttribute('id', 'searchUserResults');
 
     product.sales.forEach((sale) => {
+      const saleSpan = document.createElement('span');
       const saleDiv = document.createElement('div');
       saleDiv.classList.add('sale');
       saleDiv.title = 'Vendu le ' + new Date(sale.date).toLocaleString('fr-FR');
+
       const saleUser = document.createElement('p');
       let userEmail = sale.buyer;
       //remove etu@univ-lemans.fr if it exists in the email to extract the name
@@ -344,8 +370,18 @@ function showSales(id) {
           'Taille et/ou couleur : ' + sale.product_details.toUpperCase();
         saleDiv.appendChild(itemDetails);
       }
+      saleSpan.appendChild(saleDiv);
 
-      searchUserResults.appendChild(saleDiv);
+      const participantButton = document.createElement('button');
+      participantButton.innerText = 'Supprimer';
+      participantButton.setAttribute(
+        'onclick',
+        `removeParticipant('${sale.buyer}', '${id}', 'product')`
+      );
+      participantButton.classList.add('adminButton');
+      saleSpan.appendChild(participantButton);
+
+      searchUserResults.appendChild(saleSpan);
       salesTotalPrice += sale.price;
     });
 
@@ -467,7 +503,7 @@ function addBuyerToEvent(eventId) {
               userName.innerText = user.email + ' (' + user.username + ')';
               userDiv.appendChild(userName);
               userDiv.addEventListener('click', (e) => {
-                addBuyer(eventId, user.email)
+              addBuyer(eventId, user.email);
               });
               searchUserResults.appendChild(userDiv);
             });

@@ -9,7 +9,7 @@ router.get('', async (req, res) => {
   }
 
   const [purchasesResults] = await pool.query(
-    'SELECT purchase_date, item_name, item_price, event_id, grade_id, product_id FROM transactioncontent JOIN transaction ON transaction.transaction_id = transactioncontent.transaction_id WHERE email = ?',
+    'SELECT purchase_date, item_name, item_price, event_id, grade_id, product_id, is_canceled FROM transactionContent JOIN transaction ON transaction.transaction_id = transactionContent.transaction_id WHERE email = ?',
     [req.session.email]
   );
 

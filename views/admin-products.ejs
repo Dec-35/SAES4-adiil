@@ -70,6 +70,7 @@
     </form>
 
     <% products.forEach((product) => { %>
+    <% if (product.is_available) { %>
     <div class="product verticalflex" data-promoted="<%= product.is_promoted %>"
       onclick='location.href="/shop/product/<%= product.name.replace(` `, `-`) %>"'>
       <div class="productImage" style="
@@ -97,6 +98,7 @@
         </span>
       </div>
     </div>
+<% } %>
     <% }) %>
   </div>
 </body>
@@ -128,5 +130,6 @@
 </script>
 <script src="/js/logic.js"></script>
 <script src="/js/adminProducts.js"></script>
+<script src="/js/admin.js"></script>
 
 </html>

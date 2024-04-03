@@ -50,8 +50,10 @@ router.post('', upload.single('image'), async (req, res) => {
 
     var color = null;
     if (colors !== '') {
-      colors = colors.replace(' ', '');
+      //remove spaces and split the colors
+      colors = colors.replace(/\s/g, '');
       colors = colors.split(',');
+      console.log(colors);
 
       //get the colors from the product_color table, then delete the colors that are in the list and in the table
       //so that we only add new colors
@@ -112,8 +114,9 @@ router.post('', upload.single('image'), async (req, res) => {
       }
     }
 
-    sizes = sizes.replace(' ', '');
+    sizes = sizes.replace(/\s/g, '');
     sizes = sizes.split(',');
+    console.log(sizes);
 
     //get the sizes from the product_size table, then delete the sizes that are in the list and in the table
     //so that we only add new sizes

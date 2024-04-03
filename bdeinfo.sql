@@ -221,6 +221,7 @@ CREATE TABLE `product` (
   `confirm_threashold` int(11) DEFAULT NULL,
   `color` varchar(255) DEFAULT NULL,
   `is_promoted` int(1) DEFAULT NULL,
+  `is_available` int (1) DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */
@@ -242,6 +243,7 @@ VALUES (
     '2024-02-15 20:00:00',
     NULL,
     'bleu-marine',
+    1,
     1
   ),
   (
@@ -254,7 +256,8 @@ VALUES (
     '2024-06-30 23:59:00',
     NULL,
     NULL,
-    0
+    0,
+    1
   );
 /*!40000 ALTER TABLE `product` ENABLE KEYS */
 ;
@@ -313,9 +316,9 @@ LOCK TABLES `product_size` WRITE;
 INSERT INTO `product_size`
 VALUES (2, 's'),
   (2, 'xl'),
-  (2, ' xxl'),
-  (2, ' l'),
-  (2, ' m');
+  (2, 'xxl'),
+  (2, 'l'),
+  (2, 'm');
 /*!40000 ALTER TABLE `product_size` ENABLE KEYS */
 ;
 UNLOCK TABLES;
@@ -371,6 +374,7 @@ CREATE TABLE `transactionContent` (
   `product_id` int(11) DEFAULT NULL,
   `item_name` varchar(255) DEFAULT NULL,
   `item_price` float DEFAULT NULL,
+  `is_canceled` tinyint(1) DEFAULT 0,
   KEY `event_id` (`event_id`),
   KEY `grade_id` (`grade_id`),
   KEY `transaction_id` (`transaction_id`),
@@ -396,7 +400,8 @@ VALUES (
     NULL,
     2,
     'Pull 2023-2024(m)',
-    27.5
+    27.5,
+    0
   );
 /*!40000 ALTER TABLE `transactionContent` ENABLE KEYS */
 ;
@@ -514,3 +519,10 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */
 ;
 -- Dump completed on 2024-02-28  9:24:54
+DROP USER 'bdereader' @'localhost';
+CREATE USER 'bdereader' @'localhost' IDENTIFIED BY 'your_password';
+GRANT SELECT ON bdeinfo.* TO 'bdereader' @'localhost';
+FLUSH PRIVILEGES;
+CREATE TABLE proprietaire (nom VARCHAR(255));
+INSERT INTO proprietaire (nom)
+VALUES ('DEC35');
