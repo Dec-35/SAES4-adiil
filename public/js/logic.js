@@ -1,3 +1,4 @@
+
 //get color theme cookie
 function getCookie(cname) {
   var name = cname + '=';
@@ -449,7 +450,7 @@ if (window.calData !== undefined) {
 
   renderEventsCalendar(filteredEvents);
 }
-
+// action update grade
 const gradeButtons = document.querySelectorAll('.gradeBuyButton');
 gradeButtons.forEach((button) => {
   button.addEventListener('click', (e) => {
@@ -476,6 +477,14 @@ gradeButtons.forEach((button) => {
         }
       });
     } else {
+      /* TODO comprendre comment recup le grade
+      if le grade est bien suppérieur... else 
+      userAlert(
+            "Quelque chose s'est mal passé, merci de réessayer plus tard. Si le probleme persiste, merci de le signaler aupres de l'adiil."
+          );
+      */
+    //get the user's grade redeclaration import issue due to code's structure
+     if (true){
       fetch('/addItemToCartPort', {
         method: 'POST',
         headers: {
@@ -500,6 +509,11 @@ gradeButtons.forEach((button) => {
             userAlert(data.message);
           }
         });
+     }else {
+      userAlert(
+        "Vous ne pouvez pas acheter de grade de rang inférieur a celui que vous possédez actuelement Si le probleme persiste, merci de le signaler aupres de l'adiil."
+      );
+     }
     }
   });
 });
