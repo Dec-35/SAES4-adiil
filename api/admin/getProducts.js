@@ -11,7 +11,7 @@ router.get('', async (req, res) => {
     }
 
     const [productSales] = await pool.query(
-      'SELECT * FROM transactionContent JOIN transaction ON transactionContent.transaction_id = transaction.transaction_id RIGHT JOIN product ON transactionContent.product_id = product.id ORDER BY purchase_date DESC'
+      'SELECT * FROM transactionContent JOIN transaction ON transactionContent.transaction_id = transaction.transaction_id RIGHT JOIN product ON transactionContent.product_id = product.id WHERE is_canceled = 0 ORDER BY purchase_date DESC'
     );
 
     if (!Array.isArray(productSales)) {

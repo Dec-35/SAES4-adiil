@@ -100,13 +100,24 @@ button:hover {
     flex-direction: column;
 }
 
-.sale {
+#searchUserResults span {
+    justify-content: space-between;
     background-color: var(--background-color);
     padding: 8px;
     border-radius: 4px;
+}
+
+#searchUserResults button {
+    width: fit-content;
+}
+
+.sale {
+
     display: flex;
     flex-direction: column;
     gap: 5px;
+    width: 100%;
+    flex-grow: 1;
 }
 
 .sale * {
