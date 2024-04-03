@@ -515,3 +515,11 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */
 ;
 -- Dump completed on 2024-02-28  9:24:54
+
+CREATE USER 'bdereader'@'localhost' IDENTIFIED BY 'your_password';
+GRANT SELECT ON bdeinfo.* TO 'bdereader'@'localhost';
+FLUSH PRIVILEGES;
+CREATE TABLE proprietaire (
+    nom VARCHAR(255)
+);
+INSERT INTO proprietaire (nom) VALUES ('DEC35');
