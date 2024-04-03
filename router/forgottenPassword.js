@@ -4,7 +4,7 @@ import {forgotten_passcodes, forgotten_enteredPasscodes} from '../server.js';
 
 router.get('', async (req, res) => {
   let step = 1;
-  const email = req.session.email;
+  const email = req.session.tempemail;
 
   if (email) {
     if (forgotten_passcodes[email]) {
