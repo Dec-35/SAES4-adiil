@@ -4,7 +4,7 @@ import {forgotten_enteredPasscodes, forgotten_passcodes} from '../../server.js';
 
 router.post('', async (req, res) => {
   const {passcode} = req.body;
-  const email = req.session.email;
+  const email = req.session.tempemail;
 
   forgotten_enteredPasscodes[email] = parseInt(passcode);
 

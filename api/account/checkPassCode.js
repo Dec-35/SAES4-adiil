@@ -15,7 +15,7 @@ router.post('', async (req, res) => {
     return;
   }
 
-  req.session.email = email;
+  req.session.tempemail = email;
 
   res.json({success: true});
 });
