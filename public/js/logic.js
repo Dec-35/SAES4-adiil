@@ -484,9 +484,10 @@ gradeButtons.forEach((button) => {
           );
       */
     //get the user's grade redeclaration import issue due to code's structure
-
+    fetch('/api/user/userStats')
     console.debug(grade)
-     if (true){
+
+     if (false){
       fetch('/addItemToCartPort', {
         method: 'POST',
         headers: {

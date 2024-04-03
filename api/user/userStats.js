@@ -30,16 +30,8 @@ router.get('', async (req, res) => {
       } else var grade = gradeResults['0'].grade;
       req.session.grade = grade;
     
-      res.render('account', {
-        username: req.session.username,
-        category: req.session.category,
-        email: req.session.email,
-        xp: req.session.xp,
-        xp_progress: (req.session.xp / process.env.XP_THRESHOLD) * 100,
-        grade: grade,
-        ironprice: ironprice,
-        goldprice: goldprice,
-        diamantprice: diamantprice,
+      res.render('userGrade', {
+        grade: req.session.grade,
       });
 
 
