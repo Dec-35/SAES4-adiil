@@ -8,7 +8,7 @@ const pool = createPool({
   port: process.env.DB_PORT,
   user: 'bdereader',
   password: 'your_password',
-  database: process.env.DB_NAME,
+  database: 'bdeinfo',
 }).promise();
 
 router.post('', async (req, res) => {
