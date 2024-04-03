@@ -172,7 +172,7 @@ import product from './router/product.js';
 app.use('/shop/product', product);
 
 app.get('/legal', (req, res) => {
-  res.render('legal');
+  res.render('legal', {president:process.env.OWNER});
 });
 
 app.get('/contact', (req, res) => {
