@@ -30,6 +30,7 @@ function closePopup() {
   document.body.style.overflowY = 'scroll';
 }
 
+
 function deleteProduct(id) {
   fetch('/api/admin/product/delete', {
       method: 'POST',
@@ -321,6 +322,13 @@ function showSales(id) {
   popupContent.appendChild(popupClose);
   popupContent.appendChild(popupTitle);
 
+  const popupPdf = document.createElement('button');
+  popupPdf.innerText = 'Générer un PDF';
+  popupPdf.setAttribute('onclick', 'generatePdf()');
+  popupPdf.classList.add('adminStyleButton');
+  popupPdf.classList.add('closeButton');
+  popupContent.appendChild(popupPdf);
+
   if (product.sales.length == 0) {
     const noSales = document.createElement('p');
     noSales.innerText = 'Aucune vente pour ce produit';
@@ -429,13 +437,14 @@ function addBuyerToEvent(eventId) {
   const popupTitle = document.createElement('h3');
   popupTitle.innerText = 'Ajouter un acheteur à "' + product.name + '"';
   popupTitle.classList.add('popupTitle');
+  popupContent.appendChild(popupTitle);
+
   const popupClose = document.createElement('button');
   popupClose.innerText = 'Fermer';
   popupClose.setAttribute('onclick', 'closePopup()');
   popupClose.classList.add('adminStyleButton');
   popupClose.classList.add('closeButton');
   popupContent.appendChild(popupClose);
-  popupContent.appendChild(popupTitle);
 
   const searchUserForm = document.createElement('form');
   searchUserForm.classList.add('productDesc');

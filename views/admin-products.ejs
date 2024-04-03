@@ -11,7 +11,9 @@
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"
+    integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous">
+  </script>
   <title>Produits Admin</title>
 </head>
 
@@ -96,12 +98,38 @@
         </span>
       </div>
     </div>
-    <% } %>
+<% } %>
     <% }) %>
   </div>
 </body>
+<script>
+  function generatePdf() {
+    // Sélectionner le div juste en dessous du bouton
+    const parentDiv = document.querySelector('#searchUserResults');
+
+    // Vérifier si la div parente a été trouvée
+    if (parentDiv) {
+      // Créer une instance de jsPDF
+      const doc = new jsPDF();
+
+      // Sélectionner tous les enfants de la div parente
+      const childDivs = parentDiv.querySelectorAll('div');
+
+      // Parcourir tous les enfants et les ajouter au PDF
+      childDivs.forEach((childDiv, index) => {
+        // Ajouter le contenu de chaque div au PDF
+        doc.text(10, 10 + (index * 10), `Div ${index + 1}: ${childDiv.innerHTML}`);
+      });
+
+      // Télécharger le PDF
+      doc.save('resultats.pdf');
+    } else {
+      console.error('La div parente spécifiée n\'a pas été trouvée.');
+    }
+  }
+</script>
 <script src="/js/logic.js"></script>
 <script src="/js/adminProducts.js"></script>
 <script src="/js/admin.js"></script>
-</html>
 
+</html>
