@@ -123,6 +123,22 @@ function showCardDetails(purchase) {
     document.getElementById('showMore').appendChild(time);
   }
 
+  if (purchase.type === 'product') {
+    let newName = purchase.item_name;
+    //remove the (size) form the name
+    if (newName.includes('(')) {
+      newName = newName.slice(0, newName.indexOf('('));
+    }
+
+    itemImage.style.cursor = 'pointer';
+    itemImage.onclick = () => {
+      window.location.href = `/shop/product/archive/${newName}`;
+    };
+  } else {
+    itemImage.style.cursor = 'default';
+    itemImage.onclick = () => {};
+  }
+
   document.getElementById('itemCardPrice').innerText =
     purchase.item_price.toFixed(2) + ' €';
   const purchaseDate = new Date(purchase.purchase_date);
