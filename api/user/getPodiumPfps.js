@@ -11,11 +11,19 @@ router.get('', async (req, res) => {
   const listToReturn = [];
 
   for (const result of results) {
-    if (!result.dc_id || !result.dc_pfp) {
+    if (!result.dc_id || !result.dc_pfp || result.dc_pfp === 'NULL') {
       listToReturn.push(null);
       continue;
     }
     const pfpUrl = `https://cdn.discordapp.com/avatars/${result.dc_id}/${result.dc_pfp}.jpg`;
+
+    // Check if the image exists
+    const response = await fetch(pfpUrl);
+    if (!response.ok) {
+      listToReturn.push(null);
+      continue;
+    }
+
     listToReturn.push(pfpUrl);
   }
 
