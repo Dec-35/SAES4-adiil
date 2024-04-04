@@ -16,6 +16,14 @@ router.get('', async (req, res) => {
       continue;
     }
     const pfpUrl = `https://cdn.discordapp.com/avatars/${result.dc_id}/${result.dc_pfp}.jpg`;
+
+    // Check if the image exists
+    const response = await fetch(pfpUrl);
+    if (!response.ok) {
+      listToReturn.push(null);
+      continue;
+    }
+
     listToReturn.push(pfpUrl);
   }
 
