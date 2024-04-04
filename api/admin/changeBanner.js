@@ -12,7 +12,8 @@ router.post('', async (req, res) => {
     if (req.session.category !== 'admin') {
       res.status(403).json({error: 'Vous ne pouvez pas faire ça'});
       console.log(
-        'Tentative illégale d ajout de participant par ' + req.session.email
+        'Tentative illégale de modification de la banière par ' +
+          req.session.email
       );
       return;
     }
