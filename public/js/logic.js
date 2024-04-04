@@ -424,30 +424,37 @@ if (document.getElementById('addEvent') !== null) {
     selectedEvent = null;
   });
 }
-//check if the window.calData is defined
-if (window.calData !== undefined) {
-  // Extract the event objects from the data object
-  const eventObjects = Object.values(window.calData);
+//check if the window.isCal is defined
+if (window.isCal) {
+  fetch('/api/getEvents')
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        const eventObjects = data.events;
 
-  // Iterate over the event objects and extract necessary details
-  const events = eventObjects.map((eventObject) => {
-    return {
-      title: eventObject.summary,
-      start: new Date(eventObject.start),
-      end: new Date(eventObject.end),
-      location: eventObject.location,
-      description: eventObject.description,
-      // Add more properties as needed
-    };
-  });
+        // Iterate over the event objects and extract necessary details
+        const events = eventObjects.map((eventObject) => {
+          return {
+            title: eventObject.summary,
+            start: new Date(eventObject.start),
+            end: new Date(eventObject.end),
+            location: eventObject.location,
+            description: eventObject.description,
+            // Add more properties as needed
+          };
+        });
 
-  //filter out the past events
-  const today = new Date();
-  const filteredEvents = events.filter((event) => {
-    return event.end > today;
-  });
+        //filter out the past events
+        const today = new Date();
+        const filteredEvents = events.filter((event) => {
+          return event.end > today;
+        });
 
-  renderEventsCalendar(filteredEvents);
+        renderEventsCalendar(filteredEvents);
+      } else {
+        userAlert('Erreur : ' + data.message);
+      }
+    });
 }
 // action update grade
 const gradeButtons = document.querySelectorAll('.gradeBuyButton');

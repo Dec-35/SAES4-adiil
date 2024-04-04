@@ -1,5 +1,4 @@
 import express, {json} from 'express';
-import ICAL from 'ical.js';
 import fs from 'fs';
 const router = express.Router();
 import {
@@ -12,6 +11,7 @@ import {
   diamantprice,
   getVersion,
 } from '../server.js';
+import e from 'express';
 
 function getHomeImages() {
   //get all images from public/images/home
@@ -34,7 +34,6 @@ function getHomeImages() {
 
 router.get('', async (req, res) => {
   try {
-    const data = fs.readFileSync('./public/ical/basic.ics', 'utf8');
     if (!ironprice || !goldprice || !diamantprice) {
       await getGradePrices();
     }
@@ -51,36 +50,10 @@ router.get('', async (req, res) => {
     const version = getVersion();
     const homeImages = getHomeImages();
 
-    const jcalData = ICAL.parse(data);
-    // Assuming the main component is a VCALENDAR
-    const comp = new ICAL.Component(jcalData);
-    // Extract all VEVENT components from the VCALENDAR
-    const jCal = comp.jCal;
-    const vevents = jCal[2][0][1];
-
-    var events = [];
-
-    if (vevents.length > 0) {
-      events = [vevents].map((vevent) => {
-        return {
-          summary: vevent.find((x) => x[0] === 'summary')[3],
-          start: new Date(vevent.find((x) => x[0] === 'dtstart')[3]),
-          end: new Date(vevent.find((x) => x[0] === 'dtend')[3]),
-          description: vevent.find((x) => x[0] === 'description')[3],
-          location: vevent.find((x) => x[0] === 'location')[3],
-          // Add other properties as needed
-        };
-      });
-    } else {
-      console.log('No VEVENT components found in the VCALENDAR.');
-      res.status(500).send('No VEVENT components found in the VCALENDAR.');
-      return;
-    }
     res.render('index', {
       username: req.session.username,
       cartSize: req.session.cart && req.session.cart.length,
       isLoggedIn: req.session.isLoggedIn,
-      events: events,
       ironprice: ironprice,
       goldprice: goldprice,
       diamantprice: diamantprice,
@@ -91,7 +64,7 @@ router.get('', async (req, res) => {
     });
     return;
   } catch (err) {
-    console.error('Error fetching iCal data (from google cal)');
+    console.error('Error showing home page');
     console.error('Error rendering index:', err);
     res
       .status(500)
