@@ -58,9 +58,7 @@ router.post('', async (req, res) => {
       res.status(404).json({error: 'Impossible de trouver l evenement'});
       return;
     }
-
     const price = itemResults['0'].price;
-    console.log('element :', element);
 
     element.price = price;
     totalPrice += price;
@@ -80,7 +78,6 @@ router.post('', async (req, res) => {
     'INSERT INTO transaction (transaction_id, email, total_price, validated) VALUES (?, ?, ?, ?)',
     [insertedID, req.session.email, totalPrice, 1],
     (err) => {
-      console.log('Entering callback');
       if (err) {
         console.error('Impossible d ajouter la transaction :', err);
         res.status(500).send('Impossible d ajouter la transaction');

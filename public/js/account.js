@@ -9,7 +9,6 @@ fetch('/api/user/purchases', {
   .then((res) => res.json())
   .then((data) => {
     if (data.success) {
-      console.log(data.purchases);
       if (data.purchases.length === 0) {
         const noPurchase = document.createElement('h4');
         noPurchase.innerText = "Vous n'avez pas encore effectué d'achat";

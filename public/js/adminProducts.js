@@ -3,18 +3,12 @@ fetch('/api/admin/products')
   .then((res) => res.json())
   .then((data) => {
     if (data.success) {
-      console.log(data.products);
       products = data.products;
-
       const monthlySales = getMonthlySales();
       showSalesLineGraph(monthlySales);
-      console.log(monthlySales);
-
       const salesByProduct = getSalesByProduct();
-      console.log(salesByProduct);
       showSalesBarChart(salesByProduct);
     } else {
-      console.log(data.message);
       userAlert(data.message);
     }
   });
@@ -30,17 +24,16 @@ function closePopup() {
   document.body.style.overflowY = 'scroll';
 }
 
-
 function deleteProduct(id) {
   fetch('/api/admin/product/delete', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json' // Indique que le corps de la requête est au format JSON
-      },
-      body: JSON.stringify({
-        id: id
-      }) // Convertit l'objet JavaScript en chaîne JSON
-    })
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json', // Indique que le corps de la requête est au format JSON
+    },
+    body: JSON.stringify({
+      id: id,
+    }), // Convertit l'objet JavaScript en chaîne JSON
+  })
     .then((res) => res.json())
     .then((data) => {
       if (data.success) {
@@ -52,12 +45,16 @@ function deleteProduct(id) {
       }
     })
     .catch((error) => {
-      console.error('Erreur lors de la requête de suppression du produit:', error);
+      console.error(
+        'Erreur lors de la requête de suppression du produit:',
+        error
+      );
       // Gérer l'erreur comme vous le souhaitez
-      userAlert('Erreur lors de la suppression du produit. Veuillez réessayer plus tard.');
+      userAlert(
+        'Erreur lors de la suppression du produit. Veuillez réessayer plus tard.'
+      );
     });
 }
-
 
 function modifyProduct(e) {
   e.preventDefault();
@@ -67,9 +64,9 @@ function modifyProduct(e) {
 
   //send the form data
   fetch('/api/admin/product/edit', {
-      method: 'POST',
-      body: formData,
-    })
+    method: 'POST',
+    body: formData,
+  })
     .then((res) => res.json())
     .then((data) => {
       if (data.success) {
@@ -403,9 +400,9 @@ function addProduct(e) {
 
   //send the form data
   fetch('/api/admin/product/add', {
-      method: 'POST',
-      body: formData,
-    })
+    method: 'POST',
+    body: formData,
+  })
     .then((res) => res.json())
     .then((data) => {
       if (data.success) {
@@ -465,18 +462,17 @@ function addBuyerToEvent(eventId) {
     if (e.target.value.length < 3) return;
     const email = e.target.value;
     fetch('/api/admin/searchUser', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          value: email,
-        }),
-      })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        value: email,
+      }),
+    })
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          console.log(data.results);
           searchUserResults.innerHTML = '';
           if (data.results.length == 0) {
             const noResults = document.createElement('p');
@@ -503,7 +499,7 @@ function addBuyerToEvent(eventId) {
               userName.innerText = user.email + ' (' + user.username + ')';
               userDiv.appendChild(userName);
               userDiv.addEventListener('click', (e) => {
-              addBuyer(eventId, user.email);
+                addBuyer(eventId, user.email);
               });
               searchUserResults.appendChild(userDiv);
             });
@@ -530,16 +526,16 @@ function addBuyer(productId, email) {
   if (options === null) return;
 
   fetch('/api/admin/products/addBuyer', {
-      method: 'POST',
-      body: JSON.stringify({
-        productId: productId,
-        buyer: email,
-        options: options,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    method: 'POST',
+    body: JSON.stringify({
+      productId: productId,
+      buyer: email,
+      options: options,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
     .then((res) => res.json())
     .then((data) => {
       if (data.success) {
@@ -593,7 +589,7 @@ function getMonthlySales() {
   return {
     months,
     salesByMonth,
-    amountByMonth
+    amountByMonth,
   };
 }
 
@@ -602,7 +598,8 @@ function showSalesLineGraph(monthlySales) {
     type: 'line',
     data: {
       labels: monthlySales.months,
-      datasets: [{
+      datasets: [
+        {
           label: 'Ventes mensuelles',
           data: monthlySales.salesByMonth,
           yAxisID: 'linear',
@@ -658,7 +655,7 @@ function getSalesByProduct() {
   });
   return {
     productsNames,
-    salesByProduct
+    salesByProduct,
   };
 }
 
@@ -667,11 +664,13 @@ function showSalesBarChart(salesByProduct) {
     type: 'bar',
     data: {
       labels: salesByProduct.productsNames,
-      datasets: [{
-        label: 'Ventes par produit',
-        data: salesByProduct.salesByProduct,
-        borderWidth: 1,
-      }, ],
+      datasets: [
+        {
+          label: 'Ventes par produit',
+          data: salesByProduct.salesByProduct,
+          borderWidth: 1,
+        },
+      ],
     },
     options: {
       scales: {

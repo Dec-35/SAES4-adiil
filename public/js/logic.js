@@ -274,7 +274,6 @@ function renderEventsCalendar(events) {
     events: events,
     eventClick: function (info) {
       var event = info.event;
-      console.log(event);
       var title = event.title;
 
       var start = event.start;
@@ -307,7 +306,6 @@ function renderEventsCalendar(events) {
 
       // in this form <span>{description : Déguisez-vous pour célébrer cet événement !}, {prix : -1}, {image:carnaval.webp}</span>
       var eventDescription = cleanStringToObject(description);
-      console.log(eventDescription);
 
       const eventPrice = parseFloat(eventDescription['prix']);
 
