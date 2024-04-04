@@ -10,6 +10,16 @@ router.post('', async (req, res) => {
     return;
   }
 
+  if (!ironprice || !goldprice || !diamantprice) {
+    res.status(400).json({error: 'Veuillez remplir tous les champs'});
+    return;
+  }
+
+  if (isNaN(ironprice) || isNaN(goldprice) || isNaN(diamantprice)) {
+    res.status(400).json({error: 'Les prix doivent être des nombres'});
+    return;
+  }
+
   await pool.query(
     'UPDATE grade SET price = ? WHERE name = ?',
     [ironprice, 'iron'],
