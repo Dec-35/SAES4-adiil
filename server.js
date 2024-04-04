@@ -49,6 +49,70 @@ app.use(
   })
 );
 
+import Blacklist from './Blacklist.js';
+const blacklist = new Blacklist();
+
+function treatInvalidRequest(err, req, res, next) {
+  if (err instanceof URIError) {
+    logInvalidRequest(req);
+  }
+
+  // Pass the error to the next error-handling middleware
+  res.status(404).send('Invalid request');
+}
+
+function logInvalidRequest(req) {
+  // Log IP address, request address, and datetime
+  const ip = req.ip || req.connection.remoteAddress;
+  const requestAddress = req.originalUrl || req.url;
+  const datetime = new Date().toLocaleString();
+
+  //open url access err log file
+
+  fs.appendFile(
+    'invalidRequestLogs.txt',
+    `${datetime} | Invalid request from IP ${ip} to ${requestAddress}\n`,
+    (err) => {
+      if (err) {
+        console.error('Error writing to invalidRequestLogs.txt:', err);
+      }
+    }
+  );
+
+  console.log(
+    `${datetime} | Invalid request from IP ${ip} to ${requestAddress}`
+  );
+
+  blacklist.addToBlacklist(ip);
+}
+
+app.use((req, res, next) => {
+  try {
+    decodeURIComponent(req.url);
+    next();
+  } catch (err) {
+    next(new URIError('Failed to decode param'));
+  }
+});
+
+app.use(treatInvalidRequest);
+
+app.use((req, res, next) => {
+  const ip = req.ip || req.connection.remoteAddress;
+  const requestAddress = req.originalUrl || req.url;
+  const datetime = new Date().toLocaleString();
+  process.stdout.write(
+    `${datetime} | Request from IP "${ip}" to "${requestAddress}"` +
+      (req.session.isLoggedIn ? ` from user ${req.session.email} ` : ' ')
+  );
+
+  if (blacklist.isBlacklisted(ip)) {
+    res.status(403).send('You are not allowed to access this website.');
+  } else {
+    next();
+  }
+});
+
 let passcodes = {};
 let enteredPasscodes = {};
 
@@ -108,7 +172,7 @@ import product from './router/product.js';
 app.use('/shop/product', product);
 
 app.get('/legal', (req, res) => {
-  res.render('legal');
+  res.render('legal', {president: process.env.OWNER});
 });
 
 app.get('/contact', (req, res) => {
@@ -183,7 +247,10 @@ async function getPodium(req) {
   );
 
   while (podiumResults.length < 3) {
-    podiumResults.push({username: 'Anonyme', xp: 0});
+    podiumResults.push({
+      username: 'Anonyme',
+      xp: 0,
+    });
   }
 
   req.session.podium = podiumResults;
@@ -234,8 +301,16 @@ async function checkAndAddEventToDatabase(id, event) {
     );
     //add the event to the database
     await pool.query(
-      'INSERT INTO event (id, name, price, date, image) VALUES (?, ?, ?, ?, ?)',
-      [id, event.summary, event.price, sqlDateTime, event.image],
+      'INSERT INTO event (id, name, description, price, date, image, location) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [
+        id,
+        event.summary,
+        event.description,
+        event.price,
+        sqlDateTime,
+        event.image,
+        event.location,
+      ],
       (err) => {
         if (err) {
           console.error('Impossible to add an event :', err);
@@ -408,10 +483,9 @@ async function addUserToEventWithXp(
       if (usersToRenewResults.length === 0) {
         //add the user and the grade to the usersToRenew table
         console.log('Adding user the users to renew list');
-        console.log(req.session.grade);
         const [gradeResults] = await pool.query(
           'SELECT id FROM grade WHERE name = ?',
-          [req.session.grade]
+          name
         );
         const gradeId = gradeResults['0'].id;
 
@@ -479,11 +553,14 @@ app.use('/api/user/leaderboard', leaderboard);
 import getCartItems from './api/user/getCartItems.js';
 app.use('/api/user/getCartItems', getCartItems);
 
-import getEvents from './api/user/getAgenda.js';
-app.use('/api/user/getAgenda', getEvents);
+import getAgenda from './api/user/getAgenda.js';
+app.use('/api/user/getAgenda', getAgenda);
 
 import getEventsUser from './api/user/getEventsUser.js';
 app.use('/api/user/getEventsUser', getEventsUser);
+
+import getUserPurchases from './api/user/getPurchases.js';
+app.use('/api/user/purchases', getUserPurchases);
 
 import getPodiumPfps from './api/user/getPodiumPfps.js';
 app.use('/api/user/getPodiumPfps', getPodiumPfps);
@@ -532,6 +609,9 @@ app.use('/api/account/checkPasscode', checkPassCode);
 import changeBanner from './api/admin/changeBanner.js';
 app.use('/api/admin/changeBanner', changeBanner);
 
+import changePresident from './api/admin/changePresident.js';
+app.use('/api/admin/changePresident', changePresident);
+
 import changeXpThreshold from './api/admin/changeXpThreshold.js';
 app.use('/api/admin/changeXpThreshold', changeXpThreshold);
 
@@ -546,6 +626,9 @@ app.use('/api/admin/changeGradePrices', changeGradePrices);
 
 import getEventsAdmin from './api/admin/getEvents.js';
 app.use('/api/admin/getEvents', getEventsAdmin);
+
+import createEvent from './api/admin/createEvent.js';
+app.use('/api/admin/createEvent', createEvent);
 
 import getGradesSales from './api/admin/getGradesSales.js';
 app.use('/api/admin/getGradesSales', getGradesSales);
@@ -567,6 +650,9 @@ app.use('/api/admin/product/add', addProduct);
 
 import editProduct from './api/admin/editProduct.js';
 app.use('/api/admin/product/edit', editProduct);
+
+import deleteProduct from './api/admin/deleteProduct.js';
+app.use('/api/admin/product/delete', deleteProduct);
 
 import getProducts from './api/admin/getProducts.js';
 app.use('/api/admin/products', getProducts);
@@ -595,6 +681,9 @@ app.use('/api/ndli/getRoom', getNdliRoom);
 
 //native app.posts (non api)
 
+import getEvents from './api/user/getEvents.js';
+app.use('/api/getEvents', getEvents);
+
 import getImageLink from './api/divers/getImageLink.js';
 app.use('/getImageLinkPort', getImageLink);
 
@@ -604,7 +693,9 @@ app.get('/api/changelogs/:version', (req, res) => {
   const changelog = readFileSync(`./public/changelogs/${version}.txt`, 'utf-8');
   const changelogArray = changelog.split('\n');
 
-  res.json({changelogArray});
+  res.json({
+    changelogArray,
+  });
 });
 
 app.get('/api/getChangelogs', (req, res) => {
@@ -617,14 +708,19 @@ app.get('/api/getChangelogs', (req, res) => {
     changelogsArray.push(changelog.substring(0, changelog.length - 4));
   });
 
-  res.json({changelogsArray});
+  res.json({
+    changelogsArray,
+  });
 });
 
 app.post('/removeItemFromCartPort', async (req, res) => {
   var {id} = req.body;
   if (id === 'all') {
     req.session.cart = [];
-    res.status(200).json({success: true, message: 'Cart cleared'});
+    res.status(200).json({
+      success: true,
+      message: 'Cart cleared',
+    });
     return;
   }
 
@@ -649,16 +745,28 @@ app.post('/addItemToCartPort', (req, res) => {
 
   if (!item) {
     if (size !== undefined && size !== null && type === 'product') {
-      req.session.cart.push({type: type, id: id, size: size}); // add the item to the cart if it doesn't exist yet
-    } else req.session.cart.push({type: type, id: id}); // add the item to the cart if it doesn't exist yet
+      req.session.cart.push({
+        type: type,
+        id: id,
+        size: size,
+      }); // add the item to the cart if it doesn't exist yet
+    } else
+      req.session.cart.push({
+        type: type,
+        id: id,
+      }); // add the item to the cart if it doesn't exist yet
   } else {
-    res
-      .status(409)
-      .json({success: false, message: 'Item déjà dans votre panier'});
+    res.status(409).json({
+      success: false,
+      message: 'Item déjà dans votre panier',
+    });
     return;
   }
 
-  res.status(200).json({success: true, message: 'Item added to cart'});
+  res.status(200).json({
+    success: true,
+    message: 'Item added to cart',
+  });
 });
 
 app.get('/api/account/logout', (req, res) => {
@@ -668,7 +776,9 @@ app.get('/api/account/logout', (req, res) => {
 });
 
 app.post('/loginStatus', (req, res) => {
-  res.json({isLoggedIn: !!req.session.isLoggedIn});
+  res.json({
+    isLoggedIn: !!req.session.isLoggedIn,
+  });
 });
 
 app.get('*', function (req, res) {

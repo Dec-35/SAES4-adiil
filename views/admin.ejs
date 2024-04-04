@@ -17,7 +17,32 @@
       <button id="themeSwitcher" class="headerButton" onclick="switchTheme(this)">Theme sombre</button>
       <a href="/admin/products/" class="adminButton">Gérer les produits</a>
     </div>
+    <form class="adminItem adminForm small" id="presidentForm">
+      <h3>Nom du président :</h3>
+      <span>
+        <input type="text" id="presidentInput" placeholder="<%=president%>"></input>
+        <button class="adminButton" > Valider </button>
 
+      </span>
+    </form>
+    <div class="adminItem small">
+      <h3>Ventes de grades</h3>
+      <div id="gradesSales"></div>
+    </div>
+    <div class="adminItem small">
+      <h3>Actions de début de semestre</h3>
+      <form
+        style="display: flex; flex-direction: column"
+        id="startSemesterForm"
+        class="adminForm"
+      >
+        <span>
+          <p for="startSemester">Mettre à jour les grades</p>
+          
+          <button type="submit" disabled>Valider</button>
+        </span>
+      </form>
+    </div>
     <div class="adminItem" id="changePrice">
       <h3>Prix des grades :</h3>
       <div>
@@ -76,10 +101,7 @@
         </form>
       </div>
     </div>
-    <div class="adminItem">
-      <h3>Ventes de grades</h3>
-      <div id="gradesSales"></div>
-    </div>
+    
     
     <div class="adminItem" id="changeXp">
       <h3>Quantité d'xp que rapporte un event</h3>
@@ -170,19 +192,73 @@
         
       </form>
     </div>
+    
     <div class="adminItem">
-      <h3>Actions de début de semestre</h3>
+      <h3>Créer un événement</h3>
       <form
         style="display: flex; flex-direction: column"
-        id="startSemesterForm"
+        id="createEventForm"
         class="adminForm"
       >
         <span>
-          <p for="startSemester">Mettre à jour les grades</p>
-          
-          <button type="submit" disabled>Valider</button>
+          <label for="eventName">Nom</label>
+          <input
+            type="text"
+            name="eventName"
+            id="eventName"
+            placeholder="Nom de l'événement"
+          />
         </span>
-      </form>
+        <span>
+          <label for="eventDescription">Description</label>
+          <input
+            type="text"
+            name="eventDescription"
+            id="eventDescription"
+            placeholder="Description de l'événement"
+          />
+        </span>
+        <span>
+          <span>      
+            <label for="eventDate">Date</label>
+            <input type="datetime-local" name="eventDate" id="eventDate" />
+          </span>
+          <span>
+            <label for="eventPrice">Prix</label>
+            <input
+              type="number"
+              name="eventPrice"
+              id="eventPrice"
+              placeholder="Prix de l'événement"
+            />
+          </span>
+        </span>
+        <span>
+          <span>
+          <label for="eventImage">Image</label>
+          <input
+            type="file"
+            name="eventImage"
+            id="eventImage"
+            accept="image/*"
+          />
+        </span>
+        <span>
+          <label for="eventLocation">Lieu</label>
+          <input
+            type="text"
+            name="eventLocation"
+            id="eventLocation"
+            placeholder="Lieu de l'événement"
+          />
+        </span>
+        </span>
+        
+        <span>
+        <button type="submit">Créer</button>
+
+        </span>
+      </form> 
     </div>
     <div id="inscriptionsTitle">
       <h2>Inscriptions</h2>
@@ -205,6 +281,7 @@
       </span>
     </div>
   </body>
+  <script src="/js/admin.js"></script>
   <script>
     const tableContainer = document.getElementById('adminBody');
 
@@ -216,7 +293,61 @@
       return firstName + ' ' + lastName;
     };
 
-    
+    document.getElementById('presidentForm').addEventListener('submit', (e) =>{
+      e.preventDefault();
+
+      const presidentName = document.getElementById('presidentInput').value;
+
+      fetch('/api/admin/changePresident', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({president :presidentName}),
+        }).then((res) => {
+          if (res.status === 200) {
+            userAlertGood('Nom du président changé !');
+            
+          } else {
+            return res.json().then((data) => {
+              userAlert(data.error);
+            });
+          }
+        });
+
+    })
+
+    document.getElementById('createEventForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const eventName = document.getElementById('eventName').value;
+      const eventDescription = document.getElementById('eventDescription').value;
+      const eventDate = document.getElementById('eventDate').value;
+      const eventPrice = document.getElementById('eventPrice').value;
+      const eventImage = document.getElementById('eventImage').files[0];
+      const eventLocation = document.getElementById('eventLocation').value;
+
+      const formData = new FormData();
+      formData.append('eventName', eventName);
+      formData.append('eventDescription', eventDescription);
+      formData.append('eventDate', eventDate);
+      formData.append('eventPrice', eventPrice);
+      formData.append('image', eventImage);
+      formData.append('eventLocation', eventLocation);
+
+      fetch('/api/admin/createEvent', {
+        method: 'POST',
+        body: formData,
+      }).then((res) => {
+        if (res.status === 200) {
+          userAlertGood('Evénement créé');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          userAlert('Erreur lors de la création de l\'événement');
+        }
+      });
+    });
 
     function searchUser(eventId) {
       //pop up
@@ -363,25 +494,7 @@
       }
      }
 
-    function removeParticipant(email, eventId) {
-      var areYouSure = confirm('Voulez-vous vraiment supprimer cet utilisateur ?');
-      if(!areYouSure) return;
-
-      fetch('/api/admin/removeUser', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({email, eventId}),
-      }).then((res) => {
-        if (res.status === 200) {
-          userAlertGood('Utilisateur supprimé. Rafraichir la page pour voir les changements');
-          
-        } else {
-          userAlert("Erreur lors de la suppression de l'utilisateur");
-        }
-      });
-    }
+    
 
     fetch('/api/admin/getEvents')
       .then((res) => res.json())
@@ -390,7 +503,6 @@
       });
 
     function expand(eventId){
-      console.log(`[data-date="${eventId}"]`);
       const eventContainer = document.querySelector('.eventContainer.event'+eventId);
       const eventParticipants = eventContainer.querySelector('ul');
       const expandButton = eventContainer.querySelector('.expandButton');
@@ -463,7 +575,7 @@
           participantButton.innerText = 'Supprimer';
           participantButton.setAttribute(
             'onclick',
-            `removeParticipant('${participant}', '${element.id}')`
+            `removeParticipant('${participant}', '${element.id}', 'event')`
           );
 
           participantSpan.appendChild(participantName);
@@ -603,8 +715,10 @@
           body: JSON.stringify(data),
         }).then((res) => {
           if (res.status === 200) {
-            userAlert('Prix modifiés');
-            window.location.reload();
+            userAlertGood('Prix modifiés');
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
           } else {
             userAlert('Erreur lors de la modification des prix');
           }
@@ -617,7 +731,7 @@
       const data = {
         xpAmount,
       };
-      fetch('/admin/changeXp', {
+      fetch('/api/admin/changeXpAmount', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -625,8 +739,10 @@
         body: JSON.stringify(data),
       }).then((res) => {
         if (res.status === 200) {
-          userAlert("Quantité d'xp que rapportent les events modifiée");
-          window.location.reload();
+          userAlertGood("Quantité d'xp que rapportent les events modifiée");
+          setTimeout(() => {
+              window.location.reload();
+            }, 2000);
         } else if (res.status === 400) {
           userAlert("La quantité d'xp doit être un nombre");
         } else {
@@ -640,19 +756,18 @@
       .addEventListener('submit', (e) => {
         e.preventDefault();
         const xpAmount = document.getElementById('xpThreshold').value;
-        const data = {
-          xpThreshold,
-        };
         fetch('/api/admin/changeXpThreshold', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({xpThreshold: xpAmount}),
         }).then((res) => {
           if (res.status === 200) {
-            userAlert("Seuil d'xp pour renouveller le grade modifié");
-            window.location.reload();
+            userAlertGood("Seuil d'xp pour renouveller le grade modifié");
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
           } else if (res.status === 400) {
             userAlert("La quantité d'xp doit être un nombre");
           } else {
@@ -696,8 +811,10 @@
         },
       }).then((res) => {
         if (res.status === 200) {
-          userAlert('Grades des utilisateurs mis à jour');
-          window.location.reload();
+          userAlertGood('Grades des utilisateurs mis à jour');
+          setTimeout(() => {
+              window.location.reload();
+            }, 2000);
         } else {
           userAlert('Erreur lors de la mise à jour des grades');
         }

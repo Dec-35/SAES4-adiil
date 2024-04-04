@@ -61,9 +61,11 @@ DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
   `price` float DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */
@@ -78,44 +80,56 @@ INSERT INTO `event`
 VALUES (
     11028701,
     'Marché de Noël',
+    'Marché de Noël',
     -1,
     '2023-12-21 18:30:00',
-    'marche_de_noel.webp'
+    'marche_de_noel.webp',
+    'Département info'
   ),
   (
     49469041,
     'Goûter de rentrée',
+    'Goûter de rentrée',
     0,
     '2023-09-04 16:00:00',
-    'gouter_de_rentree.webp'
+    'gouter_de_rentree.webp',
+    'Département info'
   ),
   (
     226517193,
     'Gourde ADIIL',
+    'Gourde ADIIL',
     -1,
     '2023-11-06 08:00:00',
-    'gourde.webp'
+    'gourde.webp',
+    'Département info'
   ),
   (
     239501416,
     'Nuit de l\'info',
+    'Nuit de l\'info',
     0,
     '2023-12-07 15:38:00',
-    'ndli.webp'
+    'ndli.webp',
+    'Département info'
   ),
   (
     341554572,
     'Menu Maxi',
+    'Menu Maxi',
     4.5,
     '2023-12-07 09:00:00',
-    'menu_maxi.webp'
+    'menu_maxi.webp',
+    'Département info'
   ),
   (
     383910450,
     'Soirée Haloween',
+    'Soirée Haloween',
     -1,
     '2023-10-27 17:30:00',
-    'soiree_haloween.webp'
+    'soiree_haloween.webp',
+    'Département info'
   );
 /*!40000 ALTER TABLE `event` ENABLE KEYS */
 ;
@@ -207,6 +221,7 @@ CREATE TABLE `product` (
   `confirm_threashold` int(11) DEFAULT NULL,
   `color` varchar(255) DEFAULT NULL,
   `is_promoted` int(1) DEFAULT NULL,
+  `is_available` int (1) DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */
@@ -228,6 +243,7 @@ VALUES (
     '2024-02-15 20:00:00',
     NULL,
     'bleu-marine',
+    1,
     1
   ),
   (
@@ -240,7 +256,8 @@ VALUES (
     '2024-06-30 23:59:00',
     NULL,
     NULL,
-    0
+    0,
+    1
   );
 /*!40000 ALTER TABLE `product` ENABLE KEYS */
 ;
@@ -299,9 +316,9 @@ LOCK TABLES `product_size` WRITE;
 INSERT INTO `product_size`
 VALUES (2, 's'),
   (2, 'xl'),
-  (2, ' xxl'),
-  (2, ' l'),
-  (2, ' m');
+  (2, 'xxl'),
+  (2, 'l'),
+  (2, 'm');
 /*!40000 ALTER TABLE `product_size` ENABLE KEYS */
 ;
 UNLOCK TABLES;
@@ -357,6 +374,7 @@ CREATE TABLE `transactionContent` (
   `product_id` int(11) DEFAULT NULL,
   `item_name` varchar(255) DEFAULT NULL,
   `item_price` float DEFAULT NULL,
+  `is_canceled` tinyint(1) DEFAULT 0,
   KEY `event_id` (`event_id`),
   KEY `grade_id` (`grade_id`),
   KEY `transaction_id` (`transaction_id`),
@@ -382,7 +400,8 @@ VALUES (
     NULL,
     2,
     'Pull 2023-2024(m)',
-    27.5
+    27.5,
+    0
   );
 /*!40000 ALTER TABLE `transactionContent` ENABLE KEYS */
 ;
@@ -429,7 +448,7 @@ VALUES (
     'NULL',
     'NULL'
   ),
-(
+  (
     'admin@univ-lemans.fr',
     'admin',
     '92668751',
@@ -500,3 +519,7 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */
 ;
 -- Dump completed on 2024-02-28  9:24:54
+DROP USER 'bdereader' @'localhost';
+CREATE USER 'bdereader' @'localhost' IDENTIFIED BY 'your_password';
+GRANT SELECT ON bdeinfo.* TO 'bdereader' @'localhost';
+FLUSH PRIVILEGES;

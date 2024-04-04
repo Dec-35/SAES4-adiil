@@ -217,9 +217,7 @@
     </footer>
   </body>
   <script>
-    const decodedData = JSON.parse('<%- JSON.stringify(events) %>');
-
-    window.calData = decodedData;
+    window.isCal = true;
 
     const overlay = document.getElementById('overlay');
 
@@ -241,7 +239,7 @@
         const images = data.images;
 
         for (let i = 0; i < images.length; i++) {
-          if (images[i] !== null) {
+          if (images[i] !== null && images[i] !== '' && images[i] !== 'NULL') {
             pfps[i].src = images[i];
           }
         }
@@ -249,7 +247,7 @@
       .catch((err) => console.log(err));
 
     const userGrade = '<%= grade %>';
-    console.log(userGrade);
+    window.userGrade = userGrade;
     if (userGrade !== 'None' && userGrade !== '') {
       var gradeToDisable = document.querySelector('.b' + userGrade);
       gradeToDisable.classList.add('disabled');

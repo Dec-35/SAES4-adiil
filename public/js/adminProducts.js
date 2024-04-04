@@ -3,18 +3,12 @@ fetch('/api/admin/products')
   .then((res) => res.json())
   .then((data) => {
     if (data.success) {
-      console.log(data.products);
       products = data.products;
-
       const monthlySales = getMonthlySales();
       showSalesLineGraph(monthlySales);
-      console.log(monthlySales);
-
       const salesByProduct = getSalesByProduct();
-      console.log(salesByProduct);
       showSalesBarChart(salesByProduct);
     } else {
-      console.log(data.message);
       userAlert(data.message);
     }
   });
@@ -31,7 +25,35 @@ function closePopup() {
 }
 
 function deleteProduct(id) {
-  console.log(id);
+  fetch('/api/admin/product/delete', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json', // Indique que le corps de la requête est au format JSON
+    },
+    body: JSON.stringify({
+      id: id,
+    }), // Convertit l'objet JavaScript en chaîne JSON
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        userAlertGood(data.message);
+        closePopup();
+        location.reload();
+      } else {
+        userAlert(data.message);
+      }
+    })
+    .catch((error) => {
+      console.error(
+        'Erreur lors de la requête de suppression du produit:',
+        error
+      );
+      // Gérer l'erreur comme vous le souhaitez
+      userAlert(
+        'Erreur lors de la suppression du produit. Veuillez réessayer plus tard.'
+      );
+    });
 }
 
 function modifyProduct(e) {
@@ -297,6 +319,13 @@ function showSales(id) {
   popupContent.appendChild(popupClose);
   popupContent.appendChild(popupTitle);
 
+  const popupPdf = document.createElement('button');
+  popupPdf.innerText = 'Générer un PDF';
+  popupPdf.setAttribute('onclick', 'generatePdf()');
+  popupPdf.classList.add('adminStyleButton');
+  popupPdf.classList.add('closeButton');
+  popupContent.appendChild(popupPdf);
+
   if (product.sales.length == 0) {
     const noSales = document.createElement('p');
     noSales.innerText = 'Aucune vente pour ce produit';
@@ -307,9 +336,11 @@ function showSales(id) {
     searchUserResults.setAttribute('id', 'searchUserResults');
 
     product.sales.forEach((sale) => {
+      const saleSpan = document.createElement('span');
       const saleDiv = document.createElement('div');
       saleDiv.classList.add('sale');
       saleDiv.title = 'Vendu le ' + new Date(sale.date).toLocaleString('fr-FR');
+
       const saleUser = document.createElement('p');
       let userEmail = sale.buyer;
       //remove etu@univ-lemans.fr if it exists in the email to extract the name
@@ -336,8 +367,18 @@ function showSales(id) {
           'Taille et/ou couleur : ' + sale.product_details.toUpperCase();
         saleDiv.appendChild(itemDetails);
       }
+      saleSpan.appendChild(saleDiv);
 
-      searchUserResults.appendChild(saleDiv);
+      const participantButton = document.createElement('button');
+      participantButton.innerText = 'Supprimer';
+      participantButton.setAttribute(
+        'onclick',
+        `removeParticipant('${sale.buyer}', '${id}', 'product')`
+      );
+      participantButton.classList.add('adminButton');
+      saleSpan.appendChild(participantButton);
+
+      searchUserResults.appendChild(saleSpan);
       salesTotalPrice += sale.price;
     });
 
@@ -393,13 +434,14 @@ function addBuyerToEvent(eventId) {
   const popupTitle = document.createElement('h3');
   popupTitle.innerText = 'Ajouter un acheteur à "' + product.name + '"';
   popupTitle.classList.add('popupTitle');
+  popupContent.appendChild(popupTitle);
+
   const popupClose = document.createElement('button');
   popupClose.innerText = 'Fermer';
   popupClose.setAttribute('onclick', 'closePopup()');
   popupClose.classList.add('adminStyleButton');
   popupClose.classList.add('closeButton');
   popupContent.appendChild(popupClose);
-  popupContent.appendChild(popupTitle);
 
   const searchUserForm = document.createElement('form');
   searchUserForm.classList.add('productDesc');
@@ -431,7 +473,6 @@ function addBuyerToEvent(eventId) {
       .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          console.log(data.results);
           searchUserResults.innerHTML = '';
           if (data.results.length == 0) {
             const noResults = document.createElement('p');
@@ -457,7 +498,9 @@ function addBuyerToEvent(eventId) {
               userName.classList.add('clickable');
               userName.innerText = user.email + ' (' + user.username + ')';
               userDiv.appendChild(userName);
-              userDiv.addEventListener('click', (e) => { addBuyer(eventId, user.email)});
+              userDiv.addEventListener('click', (e) => {
+                addBuyer(eventId, user.email);
+              });
               searchUserResults.appendChild(userDiv);
             });
           }
@@ -480,7 +523,7 @@ function addBuyer(productId, email) {
   const options = prompt(
     'Taille et/ou couleur (laisser vide si non-applicable)'
   );
-  if(options === null) return;
+  if (options === null) return;
 
   fetch('/api/admin/products/addBuyer', {
     method: 'POST',
@@ -543,7 +586,11 @@ function getMonthlySales() {
   salesByMonth.reverse();
   amountByMonth.reverse();
 
-  return {months, salesByMonth, amountByMonth};
+  return {
+    months,
+    salesByMonth,
+    amountByMonth,
+  };
 }
 
 function showSalesLineGraph(monthlySales) {
@@ -606,7 +653,10 @@ function getSalesByProduct() {
     productsNames.push(product.name);
     salesByProduct.push(product.sales.length);
   });
-  return {productsNames, salesByProduct};
+  return {
+    productsNames,
+    salesByProduct,
+  };
 }
 
 function showSalesBarChart(salesByProduct) {

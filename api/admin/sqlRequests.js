@@ -1,6 +1,15 @@
 import express from 'express';
 const router = express.Router();
-import {pool} from '../../server.js';
+
+import {createPool} from 'mysql2';
+const pool = createPool({
+  connectionLimit: 10,
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: 'bdereader',
+  password: 'your_password',
+  database: 'bdeinfo',
+}).promise();
 
 router.post('', async (req, res) => {
   const query = req.body.sql;

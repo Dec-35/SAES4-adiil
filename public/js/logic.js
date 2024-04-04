@@ -274,7 +274,6 @@ function renderEventsCalendar(events) {
     events: events,
     eventClick: function (info) {
       var event = info.event;
-      console.log(event);
       var title = event.title;
 
       var start = event.start;
@@ -307,7 +306,6 @@ function renderEventsCalendar(events) {
 
       // in this form <span>{description : Déguisez-vous pour célébrer cet événement !}, {prix : -1}, {image:carnaval.webp}</span>
       var eventDescription = cleanStringToObject(description);
-      console.log(eventDescription);
 
       const eventPrice = parseFloat(eventDescription['prix']);
 
@@ -332,19 +330,26 @@ function renderEventsCalendar(events) {
         .then((data) => {
           if (data.success) {
             userEvents = data.events;
+            let isCartItem = false;
 
             userEvents.forEach((eventResult) => {
-              var eventStart = new Date(eventResult.date);
+              var eventStart = new Date(eventResult.event.date);
+              eventStart.setHours(eventStart.getHours() + 2);
               if (
-                eventResult.name === title &&
+                eventResult.event.name === title &&
                 event.start.getTime() === eventStart.getTime()
               ) {
                 found = true;
+                if (eventResult.isCart) {
+                  isCartItem = true;
+                }
               }
             });
 
             if (found) {
-              document.getElementById('eventPrice').innerHTML = 'Inscrit';
+              document.getElementById('eventPrice').innerHTML = isCartItem
+                ? 'Déjà dans le panier'
+                : 'Déjà inscrit';
               document.getElementById('priceInfo').style.display = 'none';
               document.getElementById('addEvent').style.display = 'none';
             } else if (eventPrice === 0) {
@@ -417,32 +422,39 @@ if (document.getElementById('addEvent') !== null) {
     selectedEvent = null;
   });
 }
-//check if the window.calData is defined
-if (window.calData !== undefined) {
-  // Extract the event objects from the data object
-  const eventObjects = Object.values(window.calData);
+//check if the window.isCal is defined
+if (window.isCal) {
+  fetch('/api/getEvents')
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        const eventObjects = data.events;
 
-  // Iterate over the event objects and extract necessary details
-  const events = eventObjects.map((eventObject) => {
-    return {
-      title: eventObject.summary,
-      start: new Date(eventObject.start),
-      end: new Date(eventObject.end),
-      location: eventObject.location,
-      description: eventObject.description,
-      // Add more properties as needed
-    };
-  });
+        // Iterate over the event objects and extract necessary details
+        const events = eventObjects.map((eventObject) => {
+          return {
+            title: eventObject.summary,
+            start: new Date(eventObject.start),
+            end: new Date(eventObject.end),
+            location: eventObject.location,
+            description: eventObject.description,
+            // Add more properties as needed
+          };
+        });
 
-  //filter out the past events
-  const today = new Date();
-  const filteredEvents = events.filter((event) => {
-    return event.end > today;
-  });
+        //filter out the past events
+        const today = new Date();
+        const filteredEvents = events.filter((event) => {
+          return event.end > today;
+        });
 
-  renderEventsCalendar(filteredEvents);
+        renderEventsCalendar(filteredEvents);
+      } else {
+        userAlert('Erreur : ' + data.message);
+      }
+    });
 }
-
+// action update grade
 const gradeButtons = document.querySelectorAll('.gradeBuyButton');
 gradeButtons.forEach((button) => {
   button.addEventListener('click', (e) => {
@@ -469,30 +481,44 @@ gradeButtons.forEach((button) => {
         }
       });
     } else {
-      fetch('/addItemToCartPort', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'item-type': 'grade',
-        },
-        body: JSON.stringify({
-          id: e.target.classList[1][1],
-        }),
-      })
-        .then((res) => {
-          if (res.status === 200) {
-            userAlertGood('Grade ajouté au panier');
-            setTimeout(() => {
-              window.location.href = '/pay';
-            }, 1000);
-          }
-          return res.json();
+      /* TODO comprendre comment recup le grade
+      if le grade est bien suppérieur... else 
+      userAlert(
+            "Quelque chose s'est mal passé, merci de réessayer plus tard. Si le probleme persiste, merci de le signaler aupres de l'adiil."
+          );
+      */
+      //get the user's grade redeclaration import issue due to code's structure
+
+      if (e.target.classList[1][1] > window.userGrade) {
+        fetch('/addItemToCartPort', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'item-type': 'grade',
+          },
+          body: JSON.stringify({
+            id: e.target.classList[1][1],
+          }),
         })
-        .then((data) => {
-          if (!data.success) {
-            userAlert(data.message);
-          }
-        });
+          .then((res) => {
+            if (res.status === 200) {
+              userAlertGood('Grade ajouté au panier');
+              setTimeout(() => {
+                window.location.href = '/pay';
+              }, 1000);
+            }
+            return res.json();
+          })
+          .then((data) => {
+            if (!data.success) {
+              userAlert(data.message);
+            }
+          });
+      } else {
+        userAlert(
+          'Vous ne pouvez pas acheter de grade de rang inférieur a celui que vous possédez actuelement.'
+        );
+      }
     }
   });
 });

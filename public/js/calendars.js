@@ -163,6 +163,5 @@ function renderTheCal(data) {
       // Add more properties as needed
     };
   });
-  console.log(events);
   renderClassesCalendar(events);
 }

@@ -30,7 +30,7 @@ router.post('', async (req, res) => {
   //add the passcode to the forgotten_passcodes object
   forgotten_passcodes[email] = passcode;
 
-  req.session.email = email;
+  req.session.tempemail = email;
 
   await sendEmail(
     email,

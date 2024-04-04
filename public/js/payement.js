@@ -89,7 +89,6 @@ document.getElementById('payButton').addEventListener('click', () => {
 });
 
 function useCartItems(cart) {
-  console.log(cart);
   let total = 0;
   cart.forEach((item) => {
     const listItem = document.createElement('li');
@@ -187,8 +186,6 @@ function useCartItems(cart) {
   if (total > 0) {
     //TODO
   } else if (cart.length > 0) {
-    console.log(cart);
-
     //remove the second step (payment since it's free)
     document.querySelector('.selectorArrow').remove();
     document.querySelector('.stepSelector').remove();
@@ -246,7 +243,6 @@ function emptyCart() {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       if (data.success) {
         userAlertGood('Panier vidé');
 
@@ -279,7 +275,6 @@ function removeItemFromCart(id, price) {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log(data);
       if (data.success) {
         userAlertGood('Item supprimé du panier');
 
@@ -321,7 +316,6 @@ function removeItemFromCart(id, price) {
                   checkEmptyCart();
                 } else {
                   //show free checkout button
-                  console.log(cart);
                   const checkoutFreeEventsButton = document.querySelector(
                     '.nextStepButton.checkout'
                   );

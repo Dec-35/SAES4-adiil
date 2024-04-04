@@ -58,14 +58,15 @@ router.post('', async (req, res) => {
       res.status(404).json({error: 'Impossible de trouver l evenement'});
       return;
     }
-
     const price = itemResults['0'].price;
 
     element.price = price;
     totalPrice += price;
     element.name =
       itemResults['0'].name +
-      (element.size != '' ? '(' + element.size + ')' : '');
+      (element.size != undefined && element.size != ''
+        ? '(' + element.size + ')'
+        : '');
   }
 
   const email = req.session.email;
@@ -77,7 +78,6 @@ router.post('', async (req, res) => {
     'INSERT INTO transaction (transaction_id, email, total_price, validated) VALUES (?, ?, ?, ?)',
     [insertedID, req.session.email, totalPrice, 1],
     (err) => {
-      console.log('Entering callback');
       if (err) {
         console.error('Impossible d ajouter la transaction :', err);
         res.status(500).send('Impossible d ajouter la transaction');

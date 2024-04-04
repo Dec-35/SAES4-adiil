@@ -38,10 +38,11 @@
         </select>
         <% } %>
         <p class="price"><%= product.price %>€</p>
+        <% if(!isArchive){ %>
         <button onclick="addToCart()" id="buy" tabindex="2">
           Ajouter au panier
         </button>
-        <% if(product.confirm_threashold){ %>
+        <% } %> <% if(product.confirm_threashold){ %>
         <div class="progression">
           <div
             class="progressionBar"
