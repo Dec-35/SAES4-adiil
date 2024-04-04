@@ -239,7 +239,7 @@
         const images = data.images;
 
         for (let i = 0; i < images.length; i++) {
-          if (images[i] !== null) {
+          if (images[i] !== null && images[i] !== '' && images[i] !== 'NULL') {
             pfps[i].src = images[i];
           }
         }

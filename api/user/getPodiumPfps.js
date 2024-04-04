@@ -11,7 +11,7 @@ router.get('', async (req, res) => {
   const listToReturn = [];
 
   for (const result of results) {
-    if (!result.dc_id || !result.dc_pfp) {
+    if (!result.dc_id || !result.dc_pfp || result.dc_pfp === 'NULL') {
       listToReturn.push(null);
       continue;
     }
