@@ -233,8 +233,8 @@
             />
           </span>
         </span>
-        
         <span>
+          <span>
           <label for="eventImage">Image</label>
           <input
             type="file"
@@ -243,6 +243,17 @@
             accept="image/*"
           />
         </span>
+        <span>
+          <label for="eventLocation">Lieu</label>
+          <input
+            type="text"
+            name="eventLocation"
+            id="eventLocation"
+            placeholder="Lieu de l'événement"
+          />
+        </span>
+        </span>
+        
         <span>
         <button type="submit">Créer</button>
 
@@ -306,7 +317,37 @@
 
     })
 
-    
+    document.getElementById('createEventForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const eventName = document.getElementById('eventName').value;
+      const eventDescription = document.getElementById('eventDescription').value;
+      const eventDate = document.getElementById('eventDate').value;
+      const eventPrice = document.getElementById('eventPrice').value;
+      const eventImage = document.getElementById('eventImage').files[0];
+      const eventLocation = document.getElementById('eventLocation').value;
+
+      const formData = new FormData();
+      formData.append('eventName', eventName);
+      formData.append('eventDescription', eventDescription);
+      formData.append('eventDate', eventDate);
+      formData.append('eventPrice', eventPrice);
+      formData.append('image', eventImage);
+      formData.append('eventLocation', eventLocation);
+
+      fetch('/api/admin/createEvent', {
+        method: 'POST',
+        body: formData,
+      }).then((res) => {
+        if (res.status === 200) {
+          userAlertGood('Evénement créé');
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          userAlert('Erreur lors de la création de l\'événement');
+        }
+      });
+    });
 
     function searchUser(eventId) {
       //pop up

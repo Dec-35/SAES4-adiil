@@ -172,7 +172,7 @@ import product from './router/product.js';
 app.use('/shop/product', product);
 
 app.get('/legal', (req, res) => {
-  res.render('legal', {president:process.env.OWNER});
+  res.render('legal', {president: process.env.OWNER});
 });
 
 app.get('/contact', (req, res) => {
@@ -553,8 +553,8 @@ app.use('/api/user/leaderboard', leaderboard);
 import getCartItems from './api/user/getCartItems.js';
 app.use('/api/user/getCartItems', getCartItems);
 
-import getEvents from './api/user/getAgenda.js';
-app.use('/api/user/getAgenda', getEvents);
+import getAgenda from './api/user/getAgenda.js';
+app.use('/api/user/getAgenda', getAgenda);
 
 import getEventsUser from './api/user/getEventsUser.js';
 app.use('/api/user/getEventsUser', getEventsUser);
@@ -627,6 +627,9 @@ app.use('/api/admin/changeGradePrices', changeGradePrices);
 import getEventsAdmin from './api/admin/getEvents.js';
 app.use('/api/admin/getEvents', getEventsAdmin);
 
+import createEvent from './api/admin/createEvent.js';
+app.use('/api/admin/createEvent', createEvent);
+
 import getGradesSales from './api/admin/getGradesSales.js';
 app.use('/api/admin/getGradesSales', getGradesSales);
 
@@ -677,6 +680,9 @@ import getNdliRoom from './api/divers/getNdliRoom.js';
 app.use('/api/ndli/getRoom', getNdliRoom);
 
 //native app.posts (non api)
+
+import getEvents from './api/user/getEvents.js';
+app.use('/api/getEvents', getEvents);
 
 import getImageLink from './api/divers/getImageLink.js';
 app.use('/getImageLinkPort', getImageLink);

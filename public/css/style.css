@@ -1983,6 +1983,11 @@ p.pdfText {
     font-size: 0.9em;
 }
 
+.small {
+    min-height: 100px;
+    height: fit-content;
+}
+
 @media only screen and (max-width: 775px) {
     body {
         overflow-x: hidden;

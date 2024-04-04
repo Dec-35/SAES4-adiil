@@ -8,6 +8,7 @@ lerna-debug.log*
 .pnpm-debug.log*
 cals/.ics*
 public/products/*
+public/images/events/*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
