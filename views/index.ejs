@@ -248,7 +248,6 @@
 
     const userGrade = '<%= grade %>';
     window.userGrade = userGrade;
-    console.log(userGrade);
     if (userGrade !== 'None' && userGrade !== '') {
       var gradeToDisable = document.querySelector('.b' + userGrade);
       gradeToDisable.classList.add('disabled');

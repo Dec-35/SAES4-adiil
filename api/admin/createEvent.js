@@ -126,8 +126,6 @@ router.post('', upload.single('image'), async (req, res) => {
 
           // Write the updated content back to the .ics file
           fs.writeFileSync(icsFilePath, icsContent, 'utf8');
-
-          console.log('Event added successfully.');
         } else {
           //delete the uploaded file
           if (req.file) {
