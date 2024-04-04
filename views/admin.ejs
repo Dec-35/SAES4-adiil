@@ -617,8 +617,10 @@
           body: JSON.stringify(data),
         }).then((res) => {
           if (res.status === 200) {
-            userAlert('Prix modifiés');
-            window.location.reload();
+            userAlertGood('Prix modifiés');
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
           } else {
             userAlert('Erreur lors de la modification des prix');
           }
@@ -631,7 +633,7 @@
       const data = {
         xpAmount,
       };
-      fetch('/admin/changeXp', {
+      fetch('/api/admin/changeXpAmount', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -639,8 +641,10 @@
         body: JSON.stringify(data),
       }).then((res) => {
         if (res.status === 200) {
-          userAlert("Quantité d'xp que rapportent les events modifiée");
-          window.location.reload();
+          userAlertGood("Quantité d'xp que rapportent les events modifiée");
+          setTimeout(() => {
+              window.location.reload();
+            }, 2000);
         } else if (res.status === 400) {
           userAlert("La quantité d'xp doit être un nombre");
         } else {
@@ -654,19 +658,18 @@
       .addEventListener('submit', (e) => {
         e.preventDefault();
         const xpAmount = document.getElementById('xpThreshold').value;
-        const data = {
-          xpThreshold,
-        };
         fetch('/api/admin/changeXpThreshold', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify({xpThreshold: xpAmount}),
         }).then((res) => {
           if (res.status === 200) {
-            userAlert("Seuil d'xp pour renouveller le grade modifié");
-            window.location.reload();
+            userAlertGood("Seuil d'xp pour renouveller le grade modifié");
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
           } else if (res.status === 400) {
             userAlert("La quantité d'xp doit être un nombre");
           } else {
@@ -710,8 +713,10 @@
         },
       }).then((res) => {
         if (res.status === 200) {
-          userAlert('Grades des utilisateurs mis à jour');
-          window.location.reload();
+          userAlertGood('Grades des utilisateurs mis à jour');
+          setTimeout(() => {
+              window.location.reload();
+            }, 2000);
         } else {
           userAlert('Erreur lors de la mise à jour des grades');
         }
