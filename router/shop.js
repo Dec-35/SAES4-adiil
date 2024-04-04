@@ -11,7 +11,7 @@ router.get('', async (req, res) => {
 
   try {
     const [splashResults] = await pool.query(
-      'SELECT * FROM product WHERE is_promoted = 1 ORDER BY release_date DESC'
+      'SELECT * FROM product WHERE is_promoted = 1 AND expire_date > NOW() ORDER BY release_date DESC'
     );
     if (splashResults.length === 0) {
       splashProduct = 'None';
@@ -22,7 +22,9 @@ router.get('', async (req, res) => {
     }
 
     //get all products
-    const [productsResults] = await pool.query('SELECT * FROM product');
+    const [productsResults] = await pool.query(
+      'SELECT * FROM product WHERE expire_date > NOW()'
+    );
 
     products = productsResults;
   } catch (err) {
@@ -35,6 +37,27 @@ router.get('', async (req, res) => {
     splashProduct: splashProduct,
     splashImage: splashImage,
     products: products,
+    isArchive: false,
   });
 });
+
+router.get('/archive', async (req, res) => {
+  var products = [];
+
+  try {
+    const [productsResults] = await pool.query('SELECT * FROM product');
+    products = productsResults;
+  } catch (err) {
+    console.error(err);
+  }
+
+  res.render('shop', {
+    cartSize: req.session.cart && req.session.cart.length,
+    isLoggedIn: req.session.isLoggedIn,
+    splashProduct: 'None',
+    products: products,
+    isArchive: true,
+  });
+});
+
 export default router;

@@ -14,7 +14,7 @@
 
   <body data-theme="light">
     <%- include('header', {cartSize, isLoggedIn}) %> <% if (splashProduct !=
-    'None') { %>
+    'None') { %> <% if (!isArchive) { %>
     <div id="splashBanner" class="longFlex">
       <div class="desc centerFlex">
         <h1 id="splashTitle"><%= splashProduct %></h1>
@@ -28,17 +28,22 @@
       </div>
       <img class="image" src="/products/<%= splashImage %>" />
     </div>
-    <% } %>
-    <h3>La boutique</h3>
+    <% } } if (!isArchive) { %>
+    <h3 <% if (splashProduct ===
+    'None') { %> class="marginTop" <% } %> >La boutique</h3>
     <% if (products.length == 0) { %>
-    <p>Il n'y a pas de produits disponibles actuellement</p>
-    <% } %>
+    <p>Il n'y a pas de produits disponibles actuellement.</p>
+    <% } } else { %>
+    <h3 class="marginTop">Archives</h3>
+    <% if (products.length == 0) { %>
+    <p>Il n'y a pas de produits archivés.</p>
+    <% } } %>
     <div class="shopLibrary longFlex returnFlex">
       <% products.forEach((product) => { %>
       <div
         class="product verticalflex"
-        onclick='location.href="product/<%= product.name.replace(` `, `-`) %>"'
-        onkeydown="if(event.keyCode == 13) location.href='product/<%= product.name.replace(` `, `-`) %>'"
+        onclick='location.href="product/<% if (isArchive) { %>archive/<% } %><%= product.name.replace(` `, `-`) %>"'
+        onkeydown="if(event.keyCode == 13) location.href='product/<% if (isArchive) { %>archive/<% } %><%= product.name.replace(` `, `-`) %>'"
         tabindex="2"
       >
         <div
