@@ -12,6 +12,10 @@ body {
     outline-offset: 2px;
 }
 
+.marginTop {
+    margin-top: 7rem;
+}
+
 #splashBanner {
     margin-top: 76px;
     height: 35vh;
