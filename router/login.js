@@ -4,10 +4,10 @@ import {passcodes, enteredPasscodes} from '../server.js';
 
 router.get('', async (req, res) => {
   const isVerified =
-    req.session.email &&
-    passcodes[req.session.email] &&
-    enteredPasscodes[req.session.email] &&
-    passcodes[req.session.email] === enteredPasscodes[req.session.email];
+    req.session.tempemail &&
+    passcodes[req.session.tempemail] &&
+    enteredPasscodes[req.session.tempemail] &&
+    passcodes[req.session.tempemail] === enteredPasscodes[req.session.tempemail];
 
   res.render('login', {
     verifiedRegisterEmail: isVerified,

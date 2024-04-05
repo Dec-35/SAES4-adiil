@@ -8,18 +8,26 @@ import {
 } from '../../server.js';
 
 router.post('', async (req, res) => {
-  const {username, password, category} = req.body;
-  const email = req.session.email; //since this is the last step of the registration process, the email is stored in the session
+  const {
+    username,
+    password,
+    category
+  } = req.body;
+  const email = req.session.tempemail; //since this is the last step of the registration process, the email is stored in the session
 
   //check if category is valid (!= admin)
   if (category === 'admin') {
-    res.status(403).json({error: 'Vous ne pouvez pas faire ça'});
+    res.status(403).json({
+      error: 'Vous ne pouvez pas faire ça'
+    });
     console.log('Tentative d inscription de classe en admin par ' + email);
     return;
   }
 
   if (!enteredPasscodes[email] || enteredPasscodes[email] != passcodes[email]) {
-    res.status(403).json({error: 'Arretez de faire ça svp'});
+    res.status(403).json({
+      error: 'Arretez de faire ça svp'
+    });
     return;
   }
 
@@ -29,14 +37,18 @@ router.post('', async (req, res) => {
     (err, results) => {
       if (err) {
         console.error('Impossible de créer le compte :', err);
-        res.status(500).json({error: 'Impossible de créer le compte'});
+        res.status(500).json({
+          error: 'Impossible de créer le compte'
+        });
         return;
       }
     }
   );
 
   if (exists.length > 0) {
-    res.status(409).json({error: 'Email déjà utilisée'});
+    res.status(409).json({
+      error: 'Email déjà utilisée'
+    });
     return;
   }
 
@@ -47,7 +59,9 @@ router.post('', async (req, res) => {
     (err) => {
       if (err) {
         console.error('Impossible de créer le compte :', err);
-        res.status(500).json({error: 'Impossible de créer le compte '});
+        res.status(500).json({
+          error: 'Impossible de créer le compte '
+        });
         return;
       }
     }
@@ -57,7 +71,9 @@ router.post('', async (req, res) => {
 
   await setSessionItems(req, username, category, email, 0, null);
 
-  res.status(200).json({success: true});
+  res.status(200).json({
+    success: true
+  });
 });
 
 export default router;
