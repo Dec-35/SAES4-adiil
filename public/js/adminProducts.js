@@ -153,7 +153,7 @@ function editProduct(id) {
   priceInput.setAttribute('name', 'price');
   priceInput.setAttribute('placeholder', 'Prix');
   priceInput.setAttribute('value', product.price);
-
+  priceInput.setAttribute('min', "0");
   const confirmSpan = document.createElement('span');
   confirmSpan.classList.add('verticalflex');
 

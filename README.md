@@ -1,9 +1,26 @@
-# SAE-S4-bdeinfo.fr
+# SAE-S4-bdeinfo.fr - Groupe 3
 
 Le repo source pour la SAE S4 sur le site de l'ADIIL bdeinfo.fr \
 **Disclaimer** : ce repo n'est pas le code source à jour du site web bdeinfo.fr. Le code source de ce site n'est pas publique.
 \
 Ce repo sert uniquement aux infos2 du BUT informatique de Laval pour réaliser la SAE S4. Toute autre utilisation du code fourni n'est pas autorisée.
+
+## Contenu du .env
+
+Pour pouvoir lancer le serveur, il vous faudra un fichier `.env` à la racine du projet. Voici le contenu de ce fichier :
+
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASS=root
+DB_NAME=bdeinfo
+XP_AMOUNT=100
+XP_THRESHOLD=1000
+OWNER='Enzo Rynders-Vitu'
+```
+
+Si vous suivez le guide avec la base de donneés locale, vous pouvez laisser les valeurs par défaut. Sinon, remplacez-les par les informations de connexion à votre base de données.
 
 ## Guide
 

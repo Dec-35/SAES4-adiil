@@ -702,6 +702,7 @@ em {
 #photoGrid img {
     background-color: rgb(184, 184, 184);
     max-width: 100%;
+    width: 100%;
     border-radius: 9px;
     object-fit: cover;
     object-position: center;
